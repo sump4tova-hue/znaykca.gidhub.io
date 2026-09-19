@@ -1,1 +1,0 @@
-# znaykca.gidhub.io
