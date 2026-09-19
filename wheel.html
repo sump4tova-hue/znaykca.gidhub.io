@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>ЗнайКа — учебные материалы и тесты</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p1:#ff4d6d;--p2:#ffb703;--p3:#06d6a0;--p4:#4361ee;--p5:#9d4edd;--ink:#17123a;--muted:#6f6a95;--bg:#fdf7ff;--sh:0 12px 34px rgba(70,20,140,.13);--r:20px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(90px);opacity:.3;z-index:-1}
+body::before{width:420px;height:420px;background:var(--p1);top:-140px;left:-120px}
+body::after{width:460px;height:460px;background:var(--p4);bottom:-180px;right:-140px}
+.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(100deg,var(--p1),var(--p5) 55%,var(--p4));box-shadow:0 6px 24px rgba(90,20,160,.28)}
+.topbar-in{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 0;max-width:1140px;margin:0 auto;padding-left:18px;padding-right:18px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 18px}
+.logo{display:flex;align-items:center;gap:9px;color:#fff;font-size:23px;font-weight:800;cursor:pointer}
+.logo b{color:var(--p2)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.nav-btn{border:0;cursor:pointer;font:inherit;font-weight:600;font-size:14.5px;padding:9px 16px;border-radius:999px;color:#fff;background:rgba(255,255,255,.16);transition:.2s;white-space:nowrap}
+.nav-btn:hover{background:rgba(255,255,255,.32)}
+.nav-btn.active{background:#fff;color:var(--p5)}
+.sync-dot{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#fff;background:rgba(0,0,0,.18);padding:5px 11px;border-radius:999px;font-weight:700}
+.sync-dot i{width:8px;height:8px;border-radius:50%;background:#ffd166;display:inline-block}
+.sync-dot.ok i{background:#06d6a0}
+.sync-dot.err i{background:#ff4d6d}
+main{padding:26px 0 70px}
+.tab{display:none;animation:fade .3s}
+.tab.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.btn{border:0;cursor:pointer;font:inherit;font-weight:700;font-size:15px;padding:12px 22px;border-radius:14px;color:#fff;background:linear-gradient(135deg,var(--p1),var(--p5));box-shadow:0 8px 20px rgba(157,78,221,.32);transition:.2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{transform:translateY(-2px)}
+.btn.alt{background:linear-gradient(135deg,var(--p3),var(--p4))}
+.btn.warm{background:linear-gradient(135deg,var(--p2),var(--p1))}
+.btn.small{padding:8px 15px;font-size:13.5px;border-radius:11px}
+.btn.big{padding:15px 28px;font-size:16.5px}
+.btn.ghost{background:#f0ecff;color:var(--p5);box-shadow:none}
+.btn.danger{background:linear-gradient(135deg,#ff5c5c,#c9184a)}
+.input{font:inherit;padding:12px 15px;border-radius:13px;border:2px solid #ece6ff;background:#fff;color:var(--ink);width:100%;outline:none;transition:.2s}
+.input:focus{border-color:var(--p5);box-shadow:0 0 0 4px rgba(157,78,221,.14)}
+label.lbl{display:block;font-weight:700;font-size:13.5px;margin:14px 0 6px;color:var(--muted)}
+h2{font-size:27px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.sec-title{font-size:22px;margin:34px 0 16px}
+.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;align-items:center;background:linear-gradient(130deg,#fff 0%,#fff4fb 45%,#eef1ff 100%);border-radius:28px;padding:38px;box-shadow:var(--sh);border:2px solid #fff;position:relative;overflow:hidden}
+.hero h1{font-size:44px;line-height:1.1;letter-spacing:-1.4px;margin-bottom:14px}
+.hero h1 span{background:linear-gradient(120deg,var(--p1),var(--p5),var(--p4));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:17px;color:var(--muted);margin-bottom:24px;max-width:520px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-qr{background:#fff;border-radius:24px;padding:18px;text-align:center;box-shadow:var(--sh);border:2px dashed #e6dcff;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.qr-box{width:220px;height:220px;display:flex;align-items:center;justify-content:center;background:#faf8ff;border-radius:16px;overflow:hidden}
+.qr-box img{width:100%;height:100%;object-fit:contain;display:block}
+.qr-fallback{font-size:13px;color:var(--muted);padding:12px;text-align:center;line-height:1.5}
+.qr-link{display:block;margin-top:6px;color:var(--p5);font-weight:700;font-size:12.5px;text-decoration:none;word-break:break-all;max-width:230px}
+.qr-label{font-size:12px;color:var(--muted);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-top:26px}
+.stat{border-radius:var(--r);padding:20px 22px;color:#fff;box-shadow:var(--sh)}
+.stat:nth-child(1){background:linear-gradient(135deg,#ff4d6d,#ff8fa3)}
+.stat:nth-child(2){background:linear-gradient(135deg,#ffb703,#ffd166)}
+.stat:nth-child(3){background:linear-gradient(135deg,#06d6a0,#4ad9c0)}
+.stat:nth-child(4){background:linear-gradient(135deg,#4361ee,#7b8cff)}
+.stat b{display:block;font-size:34px;line-height:1}
+.stat span{font-size:13.5px;opacity:.95;font-weight:600}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.quick-card{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--sh);cursor:pointer;transition:.22s;border:2px solid transparent;text-align:center}
+.quick-card:hover{transform:translateY(-5px);border-color:var(--p5)}
+.quick-card .ic{font-size:38px;display:block;margin-bottom:10px}
+.quick-card b{display:block;font-size:16px;margin-bottom:4px}
+.quick-card small{color:var(--muted)}
+.toolbar{display:grid;grid-template-columns:1fr 220px;gap:12px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:18px}
+.card{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:10px;transition:.22s;border-top:5px solid var(--p5);animation:fade .3s}
+.card:hover{transform:translateY(-4px)}
+.card h3{font-size:17.5px;line-height:1.3}
+.card p{font-size:14.5px;color:var(--muted);flex:1}
+.mat-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chip{font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;color:#fff}
+.type-ico{font-size:22px}
+.mat-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.empty{text-align:center;padding:54px 20px;color:var(--muted);background:#fff;border-radius:var(--r);border:2px dashed #e8e0ff;font-size:16px}
+.empty .big-ic{font-size:52px;display:block;margin-bottom:10px}
+.runner{background:#fff;border-radius:26px;padding:28px;box-shadow:var(--sh);border:2px solid #f3edff}
+.q-card{background:#faf8ff;border-radius:16px;padding:18px;margin:14px 0;border-left:5px solid var(--p4)}
+.q-title{font-weight:700;font-size:16px;margin-bottom:12px}
+.ans{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:12px;background:#fff;margin-bottom:8px;cursor:pointer;transition:.18s;border:2px solid #efeaff;font-size:15px}
+.ans:hover{border-color:var(--p5);background:#faf7ff}
+.ans input{accent-color:var(--p5);width:18px;height:18px;cursor:pointer}
+.result-box{margin-top:20px;padding:24px;border-radius:20px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--p3),var(--p4));box-shadow:var(--sh)}
+.result-box.bad{background:linear-gradient(135deg,#ff8fa3,var(--p1))}
+.result-box .score{font-size:46px;font-weight:900;line-height:1.1}
+.gate{max-width:430px;margin:40px auto;background:#fff;border-radius:26px;padding:34px;box-shadow:var(--sh);text-align:center;border:2px solid #f3edff}
+.gate .lock{font-size:52px;display:block;margin-bottom:12px}
+.admin-block{background:#fff;border-radius:22px;padding:24px;box-shadow:var(--sh);margin-bottom:22px}
+.admin-block h3{font-size:19px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1.5px solid #f3efff}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.badge{display:inline-block;padding:4px 11px;border-radius:999px;font-weight:800;font-size:12.5px;color:#fff}
+.badge.g{background:var(--p3)}.badge.y{background:var(--p2)}.badge.r{background:var(--p1)}
+.row-del{background:none;border:0;cursor:pointer;font-size:17px;opacity:.55;transition:.2s}
+.row-del:hover{opacity:1;transform:scale(1.18)}
+.table-scroll{overflow-x:auto}
+.modal-back{position:fixed;inset:0;background:rgba(23,18,58,.55);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:200}
+.modal-back.open{display:flex}
+.modal{background:#fff;border-radius:26px;padding:28px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.modal h2{font-size:23px;margin-bottom:6px}
+.modal-actions{display:flex;gap:11px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+.q-block{background:#faf8ff;border-radius:16px;padding:16px;margin-bottom:14px;border:2px solid #f0eaff}
+.q-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:13px;color:var(--muted);margin-bottom:10px}
+.x{background:#ffe3e9;border:0;color:var(--p1);width:28px;height:28px;border-radius:9px;cursor:pointer;font-weight:800}
+.x:hover{background:var(--p1);color:#fff}
+.opt-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.opt-row input[type=radio]{width:20px;height:20px;accent-color:var(--p3);cursor:pointer;flex-shrink:0}
+.share-box{background:linear-gradient(135deg,#f0ecff,#e8f4ff);border-radius:16px;padding:18px;margin-top:14px;border:2px dashed #c9b8ff}
+.share-box code{display:block;background:#fff;padding:12px;border-radius:10px;margin:10px 0;word-break:break-all;font-size:13px;border:2px solid #ece6ff;color:var(--p5);font-weight:700}
+.notice{background:#fff8e1;border-left:4px solid var(--p2);padding:12px 16px;border-radius:12px;margin:12px 0;font-size:14px;color:#6b5200}
+.notice.ok{background:#e8fff5;border-color:var(--p3);color:#0a5e44}
+.notice.err{background:#fff0f3;border-color:var(--p1);color:#8b1a2f}
+footer{text-align:center;padding:26px 18px 40px;color:var(--muted);font-size:13.5px}
+#jsErr{display:none;background:#fff0f3;color:#8b1a2f;padding:14px 18px;font-family:monospace;font-size:13px;border-bottom:3px solid #ff4d6d;white-space:pre-wrap;word-break:break-word}
+@media(max-width:820px){.hero{grid-template-columns:1fr;padding:26px}.hero h1{font-size:33px}.toolbar{grid-template-columns:1fr}.nav{width:100%;margin-left:0}.nav-btn{flex:1;text-align:center;padding:9px 8px;font-size:13px}}
+</style>
+</head>
+<body>
+
+<div id="jsErr"></div>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="logo" data-goto="home"><span style="font-size:26px">📚</span><span>Знай<b>Ка</b></span></div>
+    <nav class="nav">
+      <span id="syncStatus" class="sync-dot"><i></i><span>локально</span></span>
+      <button class="nav-btn active" data-tab="home">🏠 Главная</button>
+      <button class="nav-btn" data-tab="materials">📂 Материалы</button>
+      <button class="nav-btn" data-tab="tests">🧠 Тесты</button>
+      <button class="nav-btn" data-tab="admin">🔐 Админ</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="tab-home" class="tab active">
+    <div class="hero">
+      <div>
+        <h1>Учись <span>ярко</span> и с удовольствием! 🚀</h1>
+        <p>Конспекты, презентации, ссылки и интерактивные тесты — в одном месте.</p>
+        <div class="hero-btns">
+          <button class="btn big" data-goto="materials">📂 Материалы</button>
+          <button class="btn big alt" data-goto="tests">🧠 Пройти тест</button>
+        </div>
+      </div>
+      <div class="hero-qr">
+        <div class="qr-box" id="qrBox"><div class="qr-fallback">⏳ Загрузка QR...</div></div>
+        <div class="qr-label">📱 Наведи камеру телефона</div>
+        <a class="qr-link" id="qrLink" href="#"></a>
+      </div>
+    </div>
+    <div id="localWarning"></div>
+    <div class="stats" id="statsRow"></div>
+    <h2 class="sec-title">⚡ Быстрый доступ</h2>
+    <div class="quick" id="quickRow"></div>
+  </section>
+
+  <section id="tab-materials" class="tab">
+    <div class="sec-head">
+      <h2>📂 Учебные материалы</h2>
+      <button class="btn admin-only" data-open-modal="material">＋ Добавить материал</button>
+    </div>
+    <div class="toolbar">
+      <input id="matSearch" class="input" placeholder="🔍 Поиск...">
+      <select id="matCat" class="input"></select>
+    </div>
+    <div class="grid" id="matGrid"></div>
+  </section>
+
+  <section id="tab-tests" class="tab">
+    <div class="sec-head">
+      <h2>🧠 Тестирования</h2>
+      <button class="btn admin-only" data-open-modal="test">＋ Создать тест</button>
+    </div>
+    <div class="grid" id="testGrid"></div>
+    <div id="testRunner" class="runner hidden"></div>
+  </section>
+
+  <section id="tab-admin" class="tab">
+    <div id="adminGate">
+      <div class="gate">
+        <span class="lock">🔐</span>
+        <h2>Вход для администратора</h2>
+        <p class="muted" style="margin:10px 0 18px">Пароль по умолчанию: <b>admin</b></p>
+        <input id="passInput" type="password" class="input" placeholder="Пароль">
+        <div id="passErr" style="color:var(--p1);margin-top:10px;font-weight:700"></div>
+        <button class="btn big" style="margin-top:18px;width:100%;justify-content:center" id="loginBtn">Войти</button>
+      </div>
+    </div>
+
+    <div id="adminPanel" class="hidden">
+      <div class="sec-head">
+        <h2>🔐 Панель администратора</h2>
+        <button class="btn ghost" id="logoutBtn">Выйти</button>
+      </div>
+
+      <div class="admin-block">
+        <h3>🔗 Поделиться сайтом</h3>
+        <div id="sharePanel"></div>
+      </div>
+
+      <div class="admin-block">
+        <h3>☁️ Синхронизация между устройствами</h3>
+        <div id="cloudBox"></div>
+      </div>
+
+      <div class="admin-block">
+        <h3>📊 Результаты тестирований <span class="muted" id="resCount" style="font-weight:500;font-size:14px"></span></h3>
+        <div class="toolbar" style="margin-bottom:14px">
+          <select id="resFilter" class="input"></select>
+          <button class="btn warm" id="exportBtn">⬇ Скачать CSV</button>
+        </div>
+        <div class="table-scroll"><table id="resTable"></table></div>
+      </div>
+
+      <div class="admin-block"><h3>🧠 Управление тестами</h3><div id="admTests"></div></div>
+      <div class="admin-block"><h3>📂 Управление материалами</h3><div id="admMats"></div></div>
+
+      <div class="admin-block">
+        <h3>⚙️ Настройки</h3>
+        <label class="lbl">Новый пароль администратора</label>
+        <div class="toolbar">
+          <input id="newPass" class="input" type="text" placeholder="Новый пароль">
+          <button class="btn" id="changePassBtn">Сменить пароль</button>
+        </div>
+        <label class="lbl" style="margin-top:22px">Опасная зона</label>
+        <button class="btn danger" id="clearResultsBtn">🗑 Очистить все результаты</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>ЗнайКа © <span id="year"></span> · Учебный портал</footer>
+
+<div class="modal-back" id="modalBack"><div class="modal" id="modalBox"></div></div>
+
+<!-- Отдельный скрипт с обработчиком ошибок — сработает, даже если основной упадёт -->
+<script>
+window.addEventListener('error', function(e){
+  var el = document.getElementById('jsErr');
+  if (!el) return;
+  el.style.display = 'block';
+  el.textContent = '⚠ Ошибка JavaScript: ' + (e.message || e) + (e.lineno ? '  (строка ' + e.lineno + ')' : '');
+});
+</script>
+
+<script>
+/* ==========================================================
+   СОСТОЯНИЕ
+   ========================================================== */
+var materials = [];
+var tests = [];
+var results = [];
+var isAdmin = false;
+var qCounter = 0;
+var pushTimer = null;
+var cloudBlobId = null;
+var cloudTimer = null;
+var cloudLastHash = '';
+
+var K = {
+  M: 'zk_materials',
+  T: 'zk_tests',
+  R: 'zk_results',
+  P: 'zk_pass',
+  SEED: 'zk_seeded',
+  BLOB: 'zk_blobId'
+};
+
+var CLOUD_BASE = 'https://jsonblob.com/api/jsonBlob';
+
+/* ==========================================================
+   ХЕЛПЕРЫ
+   ========================================================== */
+function $(id){ return document.getElementById(id); }
+
+function uid(){
+  return Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-3);
+}
+
+function esc(s){
+  if (s === null || s === undefined) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function fmtDate(ts){
+  return new Date(ts).toLocaleString('ru-RU', {
+    day: '2-digit', month: '2-digit', year: '2-digit',
+    hour: '2-digit', minute: '2-digit'
+  });
+}
+
+/* ==========================================================
+   LOCALSTORAGE
+   ========================================================== */
+function saveLocal(){
+  try {
+    localStorage.setItem(K.M, JSON.stringify(materials));
+    localStorage.setItem(K.T, JSON.stringify(tests));
+    localStorage.setItem(K.R, JSON.stringify(results));
+  } catch (e) {
+    console.warn('Save error', e);
+  }
+}
+
+function loadLocal(){
+  try {
+    materials = JSON.parse(localStorage.getItem(K.M) || '[]');
+    tests     = JSON.parse(localStorage.getItem(K.T) || '[]');
+    results   = JSON.parse(localStorage.getItem(K.R) || '[]');
+  } catch (e) {
+    materials = []; tests = []; results = [];
+  }
+}
+
+/* ==========================================================
+   ДЕМО-ДАННЫЕ
+   ========================================================== */
+function seed(){
+  if (localStorage.getItem(K.SEED)) return;
+
+  materials = [
+    {
+      id: uid(),
+      title: 'Строение клетки: конспект',
+      category: 'Биология',
+      type: 'text',
+      date: Date.now() - 86400000 * 2,
+      desc: 'Основные органоиды клетки и их функции.',
+      content: 'КЛЕТКА — элементарная единица живого.\n\n• Мембрана — защита и транспорт.\n• Цитоплазма — внутренняя среда.\n• Ядро — ДНК, управление.\n• Митохондрии — синтез АТФ.\n• Рибосомы — синтез белка.\n• ЭПС — транспорт.\n• Аппарат Гольджи — упаковка.\n• Лизосомы — расщепление.\n• Хлоропласты — фотосинтез.'
+    },
+    {
+      id: uid(),
+      title: 'Презентация: Вторая мировая война',
+      category: 'История',
+      type: 'link',
+      date: Date.now() - 86400000 * 5,
+      desc: 'Основные даты и события.',
+      url: 'https://ru.wikipedia.org/wiki/Вторая_мировая_война'
+    },
+    {
+      id: uid(),
+      title: 'Формулы по физике 7-9 класс',
+      category: 'Физика',
+      type: 'text',
+      date: Date.now() - 86400000 * 8,
+      desc: 'Шпаргалка по основным формулам.',
+      content: 'v = S / t\na = (v - v0) / t\nF = m * a\np = F / S\nA = F * S\nN = A / t\nE = m * v^2 / 2\nρ = m / V'
+    }
+  ];
+
+  tests = [
+    {
+      id: uid(),
+      title: 'Биология: строение клетки',
+      desc: 'Проверь знания органоидов.',
+      created: Date.now() - 86400000 * 2,
+      questions: [
+        { q: 'Какой органоид называют «энергостанцией» клетки?', options: ['Ядро', 'Митохондрия', 'Рибосома', 'Лизосома'], correct: 1 },
+        { q: 'Где хранится наследственная информация?', options: ['Цитоплазма', 'Ядро', 'Мембрана', 'Гольджи'], correct: 1 },
+        { q: 'Какой органоид отвечает за синтез белка?', options: ['Рибосома', 'Митохондрия', 'Лизосома', 'ЭПС'], correct: 0 },
+        { q: 'Какой пигмент содержится в хлоропластах?', options: ['Гемоглобин', 'Меланин', 'Хлорофилл', 'Каротин'], correct: 2 }
+      ]
+    },
+    {
+      id: uid(),
+      title: 'Физика: основные формулы',
+      desc: 'Мини-тест на знание базовых формул.',
+      created: Date.now() - 86400000 * 4,
+      questions: [
+        { q: 'По какой формуле вычисляется скорость?', options: ['v = S * t', 'v = S / t', 'v = t / S', 'v = m * a'], correct: 1 },
+        { q: 'Формула второго закона Ньютона:', options: ['F = m / a', 'F = m * a', 'F = a / m', 'F = m * g'], correct: 1 },
+        { q: 'Как вычислить давление?', options: ['p = F * S', 'p = F / S', 'p = S / F', 'p = m * g'], correct: 1 }
+      ]
+    }
+  ];
+
+  results = [];
+  saveLocal();
+  if (!localStorage.getItem(K.P)) localStorage.setItem(K.P, 'admin');
+  localStorage.setItem(K.SEED, '1');
+}
+
+/* ==========================================================
+   QR-КОД
+   ========================================================== */
+var QR_SERVICES = [
+  'https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=10&data=',
+  'https://quickchart.io/qr?size=440&margin=2&text=',
+  'https://chart.googleapis.com/chart?chs=440x440&cht=qr&chl='
+];
+
+function generateQR(container, text){
+  if (!container) return;
+  container.innerHTML = '';
+  var idx = 0;
+  var img = document.createElement('img');
+  img.alt = 'QR-код';
+
+  img.onerror = function(){
+    idx++;
+    if (idx < QR_SERVICES.length) {
+      img.src = QR_SERVICES[idx] + encodeURIComponent(text);
+    } else {
+      container.innerHTML = '<div class="qr-fallback">📵 QR-сервисы недоступны.<br>Откройте по ссылке ниже.</div>';
+    }
+  };
+
+  img.src = QR_SERVICES[0] + encodeURIComponent(text);
+  container.appendChild(img);
+}
+
+function getShareUrl(){
+  var base = location.href.split('#')[0];
+  var blobId = localStorage.getItem(K.BLOB);
+  return blobId ? base + '#cloud=' + blobId : base;
+}
+
+function updateQR(){
+  var url = getShareUrl();
+  generateQR($('qrBox'), url);
+  var link = $('qrLink');
+  if (link) { link.href = url; link.textContent = url; }
+}
+
+/* ==========================================================
+   СТАТУС СИНХРОНИЗАЦИИ
+   ========================================================== */
+function setStatus(state){
+  var el = $('syncStatus');
+  if (!el) return;
+  var label = el.querySelector('span');
+  el.classList.remove('ok', 'err');
+  if (state === 'ok') { el.classList.add('ok'); label.textContent = 'синхронизировано'; }
+  else if (state === 'err') { el.classList.add('err'); label.textContent = 'ошибка сети'; }
+  else if (state === 'pending') { label.textContent = 'сохранение...'; }
+  else { label.textContent = 'локально'; }
+}
+
+/* ==========================================================
+   ОБЛАКО (jsonblob.com)
+   ========================================================== */
+function cloudCreate(){
+  var data = { materials: materials, tests: tests, results: results, createdAt: Date.now() };
+  return fetch(CLOUD_BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(data),
+    cache: 'no-store'
+  }).then(function(res){
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var loc = res.headers.get('Location') || res.headers.get('location');
+    if (!loc) throw new Error('Не получен ID облака');
+    cloudBlobId = loc.split('/').pop();
+    localStorage.setItem(K.BLOB, cloudBlobId);
+    cloudLastHash = JSON.stringify({ m: materials, t: tests, r: results });
+    return cloudBlobId;
+  });
+}
+
+function cloudPull(){
+  if (!cloudBlobId) return Promise.resolve(null);
+  return fetch(CLOUD_BASE + '/' + cloudBlobId + '?_=' + Date.now(), {
+    cache: 'no-store',
+    headers: { 'Accept': 'application/json' }
+  }).then(function(res){
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  });
+}
+
+function cloudPush(){
+  if (!cloudBlobId) return Promise.resolve();
+  var data = { materials: materials, tests: tests, results: results, updatedAt: Date.now() };
+  return fetch(CLOUD_BASE + '/' + cloudBlobId, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    cache: 'no-store'
+  }).then(function(res){
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    cloudLastHash = JSON.stringify({ m: materials, t: tests, r: results });
+  });
+}
+
+function schedulePush(){
+  if (!cloudBlobId) return;
+  setStatus('pending');
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(function(){
+    cloudPush().then(function(){ setStatus('ok'); }).catch(function(){ setStatus('err'); });
+  }, 600);
+}
+
+function cloudRefresh(silent){
+  if (!cloudBlobId) return Promise.resolve();
+  return cloudPull().then(function(data){
+    if (!data) return;
+    var hash = JSON.stringify({
+      m: data.materials || [],
+      t: data.tests || [],
+      r: data.results || []
+    });
+    if (hash === cloudLastHash) { setStatus('ok'); return; }
+    cloudLastHash = hash;
+    materials = data.materials || [];
+    tests = data.tests || [];
+    results = data.results || [];
+    saveLocal();
+    renderAll();
+    setStatus('ok');
+  }).catch(function(){
+    setStatus('err');
+    if (!silent) alert('Не удалось загрузить данные из облака.');
+  });
+}
+
+function startCloudAuto(){
+  if (cloudTimer) clearInterval(cloudTimer);
+  if (!cloudBlobId) return;
+  cloudTimer = setInterval(function(){ cloudRefresh(true); }, 20000);
+}
+
+function disconnectCloud(){
+  if (cloudTimer) { clearInterval(cloudTimer); cloudTimer = null; }
+  cloudBlobId = null;
+  localStorage.removeItem(K.BLOB);
+  history.replaceState(null, '', location.pathname + location.search);
+  setStatus('local');
+  updateQR();
+  renderAdmin();
+}
+
+/* ==========================================================
+   НАВИГАЦИЯ
+   ========================================================== */
+function go(tab){
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  var btns = document.querySelectorAll('.nav-btn');
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].classList.toggle('active', btns[j].getAttribute('data-tab') === tab);
+  }
+  var target = $('tab-' + tab);
+  if (target) target.classList.add('active');
+
+  if (tab === 'materials') renderMaterials();
+  if (tab === 'tests') { closeRunner(); renderTests(); }
+  if (tab === 'admin') renderAdmin();
+  if (tab === 'home') renderHome();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ==========================================================
+   ЦВЕТА / ИКОНКИ
+   ========================================================== */
+var CAT_COLORS = {
+  'Биология': '#06d6a0', 'История': '#ffb703', 'Физика': '#4361ee',
+  'Информатика': '#9d4edd', 'Математика': '#ff4d6d', 'Химия': '#00b4d8',
+  'Русский язык': '#e76f51', 'Английский язык': '#7209b7',
+  'География': '#2a9d8f', 'Литература': '#f72585', 'Другое': '#6c757d'
+};
+
+function catColor(c){ return CAT_COLORS[c] || '#9d4edd'; }
+function typeIcon(t){
+  if (t === 'link') return '🔗';
+  if (t === 'file') return '📎';
+  return '📝';
+}
+
+/* ==========================================================
+   ГЛАВНАЯ
+   ========================================================== */
+function renderHome(){
+  var avg = 0;
+  if (results.length) {
+    var sum = 0;
+    for (var i = 0; i < results.length; i++) sum += results[i].percent;
+    avg = Math.round(sum / results.length);
+  }
+
+  $('statsRow').innerHTML =
+    '<div class="stat"><b>' + materials.length + '</b><span>📂 материалов</span></div>' +
+    '<div class="stat"><b>' + tests.length + '</b><span>🧠 тестов</span></div>' +
+    '<div class="stat"><b>' + results.length + '</b><span>✅ прохождений</span></div>' +
+    '<div class="stat"><b>' + avg + '%</b><span>📈 средний балл</span></div>';
+
+  var seen = {};
+  var cats = [];
+  for (var i = 0; i < materials.length; i++) {
+    var c = materials[i].category;
+    if (!seen[c]) { seen[c] = true; cats.push(c); }
+    if (cats.length >= 6) break;
+  }
+
+  if (cats.length) {
+    var html = '';
+    for (var k = 0; k < cats.length; k++) {
+      var cat = cats[k];
+      var count = 0;
+      for (var j = 0; j < materials.length; j++) if (materials[j].category === cat) count++;
+      html += '<div class="quick-card" data-cat="' + esc(cat) + '">' +
+        '<span class="ic" style="color:' + catColor(cat) + '">●</span>' +
+        '<b>' + esc(cat) + '</b>' +
+        '<small>' + count + ' материал(ов)</small>' +
+        '</div>';
+    }
+    $('quickRow').innerHTML = html;
+  } else {
+    $('quickRow').innerHTML = '<div class="empty" style="grid-column:1/-1"><span class="big-ic">📭</span>Пока нет материалов.</div>';
+  }
+
+  var warn = $('localWarning');
+  if (location.protocol === 'file:') {
+    warn.innerHTML = '<div class="notice">⚠️ Сайт открыт локально (файл на компьютере). QR и ссылка ведут на файл. Чтобы делиться с другими, опубликуйте сайт (Netlify Drop, GitHub Pages).</div>';
+  } else {
+    warn.innerHTML = '';
+  }
+
+  updateQR();
+}
+
+/* ==========================================================
+   МАТЕРИАЛЫ
+   ========================================================== */
+function renderMaterials(){
+  var cats = [];
+  var seen = {};
+  for (var i = 0; i < materials.length; i++) {
+    var c = materials[i].category;
+    if (!seen[c]) { seen[c] = true; cats.push(c); }
+  }
+  cats.sort();
+
+  var sel = $('matCat');
+  var cur = sel.value;
+  var opts = '<option value="">Все категории</option>';
+  for (var k = 0; k < cats.length; k++) {
+    opts += '<option value="' + esc(cats[k]) + '">' + esc(cats[k]) + '</option>';
+  }
+  sel.innerHTML = opts;
+  if (cats.indexOf(cur) !== -1) sel.value = cur;
+
+  var q = $('matSearch').value.trim().toLowerCase();
+  var cat = sel.value;
+
+  var list = materials.slice().sort(function(a, b){ return b.date - a.date; });
+  var filtered = [];
+  for (var m = 0; m < list.length; m++) {
+    var item = list[m];
+    if (cat && item.category !== cat) continue;
+    if (q) {
+      var hay = (item.title + ' ' + (item.desc || '')).toLowerCase();
+      if (hay.indexOf(q) === -1) continue;
+    }
+    filtered.push(item);
+  }
+
+  var grid = $('matGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><span class="big-ic">🔍</span>Ничего не найдено.</div>';
+    applyAdminUI();
+    return;
+  }
+
+  var html = '';
+  for (var n = 0; n < filtered.length; n++) {
+    var it = filtered[n];
+    var actionHtml = '';
+    if (it.type === 'link') {
+      actionHtml += '<a class="btn small" href="' + esc(it.url) + '" target="_blank" rel="noopener">🔗 Открыть</a>';
+    } else if (it.type === 'file') {
+      actionHtml += '<a class="btn small" href="' + esc(it.url) + '" download="' + esc(it.fileName || 'file') + '">⬇ Скачать</a>';
+    } else {
+      actionHtml += '<button class="btn small" data-show-text="' + esc(it.id) + '">📖 Читать</button>';
+    }
+    actionHtml += '<button class="btn small ghost admin-only" data-del-mat="' + esc(it.id) + '">🗑</button>';
+
+    html += '<article class="card" style="border-top-color:' + catColor(it.category) + '">' +
+      '<div class="mat-top">' +
+        '<span class="chip" style="background:' + catColor(it.category) + '">' + esc(it.category) + '</span>' +
+        '<span class="type-ico">' + typeIcon(it.type) + '</span>' +
+      '</div>' +
+      '<h3>' + esc(it.title) + '</h3>' +
+      '<p>' + esc(it.desc || 'Без описания') + '</p>' +
+      '<div class="muted" style="font-size:12.5px">📅 ' + fmtDate(it.date) + '</div>' +
+      '<div class="mat-actions">' + actionHtml + '</div>' +
+    '</article>';
+  }
+  grid.innerHTML = html;
+  applyAdminUI();
+}
+
+function delMaterial(id){
+  if (!confirm('Удалить материал?')) return;
+  var next = [];
+  for (var i = 0; i < materials.length; i++) if (materials[i].id !== id) next.push(materials[i]);
+  materials = next;
+  saveLocal(); schedulePush();
+  renderMaterials(); renderHome(); renderAdmin();
+}
+
+function showText(id){
+  var m = null;
+  for (var i = 0; i < materials.length; i++) if (materials[i].id === id) { m = materials[i]; break; }
+  if (!m) return;
+  openModal(
+    '<h2>' + esc(m.title) + '</h2>' +
+    '<div class="muted" style="margin:6px 0 16px">' + esc(m.category) + ' · ' + fmtDate(m.date) + '</div>' +
+    '<div style="white-space:pre-wrap;line-height:1.7;font-size:15.5px;background:#faf8ff;padding:18px;border-radius:16px">' + esc(m.content || '') + '</div>' +
+    '<div class="modal-actions"><button class="btn" data-close-modal="1">Закрыть</button></div>'
+  );
+}
+
+/* ==========================================================
+   МОДАЛКА МАТЕРИАЛА
+   ========================================================== */
+function openMaterialModal(){
+  openModal(
+    '<h2>➕ Новый материал</h2>' +
+    '<label class="lbl">Название *</label>' +
+    '<input id="mTitle" class="input" placeholder="Например: Конспект «Фотосинтез»">' +
+    '<label class="lbl">Категория *</label>' +
+    '<input id="mCat2" class="input" list="catList" placeholder="Биология">' +
+    '<datalist id="catList">' + Object.keys(CAT_COLORS).map(function(c){ return '<option value="' + c + '">'; }).join('') + '</datalist>' +
+    '<label class="lbl">Описание</label>' +
+    '<input id="mDesc" class="input" placeholder="О чём материал?">' +
+    '<label class="lbl">Тип</label>' +
+    '<select id="mType" class="input">' +
+      '<option value="text">📝 Текст</option>' +
+      '<option value="link">🔗 Ссылка</option>' +
+      '<option value="file">📎 Файл (до 2 МБ)</option>' +
+    '</select>' +
+    '<div id="fText"><label class="lbl">Текст</label><textarea id="mContent" class="input" rows="8"></textarea></div>' +
+    '<div id="fLink" class="hidden"><label class="lbl">URL</label><input id="mUrl" class="input" placeholder="https://..."></div>' +
+    '<div id="fFile" class="hidden"><label class="lbl">Файл</label><input id="mFile" class="input" type="file"></div>' +
+    '<div class="modal-actions">' +
+      '<button class="btn ghost" data-close-modal="1">Отмена</button>' +
+      '<button class="btn" id="saveMatBtn">🚀 Опубликовать</button>' +
+    '</div>'
+  );
+  toggleMatFields();
+  var sel = $('mType');
+  if (sel) sel.addEventListener('change', toggleMatFields);
+  var btn = $('saveMatBtn');
+  if (btn) btn.addEventListener('click', saveMaterial);
+}
+
+function toggleMatFields(){
+  var t = $('mType').value;
+  $('fText').classList.toggle('hidden', t !== 'text');
+  $('fLink').classList.toggle('hidden', t !== 'link');
+  $('fFile').classList.toggle('hidden', t !== 'file');
+}
+
+function saveMaterial(){
+  var title = $('mTitle').value.trim();
+  var cat = $('mCat2').value.trim() || 'Другое';
+  var desc = $('mDesc').value.trim();
+  var type = $('mType').value;
+  if (!title) { alert('Введите название'); return; }
+
+  var base = { id: uid(), title: title, category: cat, desc: desc, type: type, date: Date.now() };
+
+  function finish(){
+    saveLocal(); schedulePush();
+    closeModal();
+    renderMaterials(); renderHome(); renderAdmin();
+  }
+
+  if (type === 'text') {
+    var content = $('mContent').value.trim();
+    if (!content) { alert('Введите текст'); return; }
+    base.content = content;
+    materials.push(base);
+    finish();
+  } else if (type === 'link') {
+    var url = $('mUrl').value.trim();
+    if (!url) { alert('Введите ссылку'); return; }
+    base.url = url;
+    materials.push(base);
+    finish();
+  } else {
+    var f = $('mFile').files[0];
+    if (!f) { alert('Выберите файл'); return; }
+    if (f.size > 2 * 1024 * 1024) { alert('Файл больше 2 МБ. Загрузите на Google Диск и добавьте ссылкой.'); return; }
+    var r = new FileReader();
+    r.onload = function(e){
+      base.url = e.target.result;
+      base.fileName = f.name;
+      materials.push(base);
+      finish();
+    };
+    r.readAsDataURL(f);
+  }
+}
+
+/* ==========================================================
+   ТЕСТЫ
+   ========================================================== */
+function renderTests(){
+  var grid = $('testGrid');
+  if (!tests.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><span class="big-ic">🧠</span>Тестов пока нет.</div>';
+    applyAdminUI();
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < tests.length; i++) {
+    var t = tests[i];
+    var cnt = 0, sum = 0;
+    for (var j = 0; j < results.length; j++) {
+      if (results[j].testId === t.id) { cnt++; sum += results[j].percent; }
+    }
+    var avg = cnt ? Math.round(sum / cnt) : null;
+    var avgHtml = (avg !== null) ? ' · средний: <b>' + avg + '%</b>' : '';
+
+    html += '<article class="card" style="border-top-color:var(--p4)">' +
+      '<div class="mat-top">' +
+        '<span class="chip" style="background:var(--p4)">' + t.questions.length + ' вопросов</span>' +
+        '<span class="type-ico">🧠</span>' +
+      '</div>' +
+      '<h3>' + esc(t.title) + '</h3>' +
+      '<p>' + esc(t.desc || '') + '</p>' +
+      '<div class="muted" style="font-size:12.5px">📅 ' + fmtDate(t.created) + avgHtml + '</div>' +
+      '<div class="mat-actions">' +
+        '<button class="btn small" data-start-test="' + esc(t.id) + '">▶ Пройти</button>' +
+        '<button class="btn small ghost admin-only" data-del-test="' + esc(t.id) + '">🗑</button>' +
+      '</div>' +
+    '</article>';
+  }
+  grid.innerHTML = html;
+  applyAdminUI();
+}
+
+function delTest(id){
+  if (!confirm('Удалить тест?')) return;
+  var next = [];
+  for (var i = 0; i < tests.length; i++) if (tests[i].id !== id) next.push(tests[i]);
+  tests = next;
+  saveLocal(); schedulePush();
+  renderTests(); renderHome(); renderAdmin();
+}
+
+function closeRunner(){
+  $('testRunner').classList.add('hidden');
+  $('testGrid').classList.remove('hidden');
+}
+
+function startTest(id){
+  var t = null;
+  for (var i = 0; i < tests.length; i++) if (tests[i].id === id) { t = tests[i]; break; }
+  if (!t) return;
+
+  $('testGrid').classList.add('hidden');
+  var r = $('testRunner');
+  r.classList.remove('hidden');
+
+  var html = '<button class="btn ghost small" data-close-runner="1">← Ко всем тестам</button>' +
+    '<h2 style="margin:16px 0 6px">' + esc(t.title) + '</h2>' +
+    '<p class="muted" style="margin-bottom:20px">' + esc(t.desc || '') + '</p>' +
+    '<label class="lbl">Ваше имя *</label>' +
+    '<input id="runnerName" class="input" placeholder="Иванов Иван" style="margin-bottom:6px">' +
+    '<form id="testForm">';
+
+  for (var q = 0; q < t.questions.length; q++) {
+    var question = t.questions[q];
+    html += '<div class="q-card"><div class="q-title">' + (q + 1) + '. ' + esc(question.q) + '</div>';
+    for (var o = 0; o < question.options.length; o++) {
+      html += '<label class="ans">' +
+        '<input type="radio" name="q' + q + '" value="' + o + '">' +
+        '<span>' + esc(question.options[o]) + '</span>' +
+      '</label>';
+    }
+    html += '</div>';
+  }
+  html += '<button class="btn big" type="submit" style="margin-top:10px">✅ Завершить</button>' +
+    '</form><div id="testResult"></div>';
+
+  r.innerHTML = html;
+
+  $('testForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = $('runnerName').value.trim();
+    if (!name) { alert('Введите имя'); return; }
+
+    var unanswered = 0, score = 0;
+    for (var i = 0; i < t.questions.length; i++) {
+      var sel = document.querySelector('input[name="q' + i + '"]:checked');
+      if (!sel) unanswered++;
+      else if (Number(sel.value) === t.questions[i].correct) score++;
+    }
+    if (unanswered && !confirm('Не отвечено: ' + unanswered + '. Завершить?')) return;
+
+    var total = t.questions.length;
+    var percent = Math.round(score / total * 100);
+    results.push({
+      id: uid(),
+      testId: t.id,
+      testTitle: t.title,
+      name: name,
+      score: score,
+      total: total,
+      percent: percent,
+      date: Date.now()
+    });
+    saveLocal(); schedulePush();
+
+    var good = percent >= 70;
+    $('testResult').innerHTML =
+      '<div class="result-box ' + (good ? '' : 'bad') + '">' +
+        '<div class="score">' + score + ' / ' + total + '</div>' +
+        '<div style="font-size:19px;font-weight:800;margin-top:6px">' + percent + '%</div>' +
+        '<div style="margin-top:8px">' + (good ? '🎉 Отличный результат!' : '💪 Есть куда расти!') + '</div>' +
+      '</div>' +
+      '<div class="modal-actions" style="justify-content:flex-start">' +
+        '<button class="btn alt" data-close-runner="1">← К тестам</button>' +
+        '<button class="btn ghost" data-start-test="' + esc(t.id) + '">🔄 Заново</button>' +
+      '</div>';
+  });
+}
+
+/* ==========================================================
+   МОДАЛКА ТЕСТА
+   ========================================================== */
+function openTestModal(){
+  qCounter = 0;
+  openModal(
+    '<h2>➕ Новый тест</h2>' +
+    '<label class="lbl">Название *</label>' +
+    '<input id="tTitle" class="input">' +
+    '<label class="lbl">Описание</label>' +
+    '<input id="tDesc" class="input">' +
+    '<label class="lbl">Вопросы</label>' +
+    '<div id="qList"></div>' +
+    '<button class="btn ghost" type="button" id="addQBtn">＋ Добавить вопрос</button>' +
+    '<div class="modal-actions">' +
+      '<button class="btn ghost" data-close-modal="1">Отмена</button>' +
+      '<button class="btn" id="saveTestBtn">💾 Сохранить</button>' +
+    '</div>'
+  );
+  $('addQBtn').addEventListener('click', function(){ addQ(); });
+  $('saveTestBtn').addEventListener('click', saveTest);
+  addQ();
+}
+
+function addQ(data){
+  qCounter++;
+  var list = $('qList');
+  var n = qCounter;
+  var qid = 'q' + n + '_' + Math.random().toString(36).slice(2, 6);
+  var div = document.createElement('div');
+  div.className = 'q-block';
+  div.setAttribute('data-qid', qid);
+
+  var html = '<div class="q-head"><span>ВОПРОС ' + (list.children.length + 1) + '</span>' +
+    '<button type="button" class="x" data-remove-q="1">✕</button></div>' +
+    '<input class="q-text input" placeholder="Текст вопроса" value="' + (data ? esc(data.q) : '') + '" style="margin-bottom:10px">';
+
+  for (var i = 0; i < 4; i++) {
+    var optVal = (data && data.options && data.options[i]) ? esc(data.options[i]) : '';
+    var checked = (data && data.correct === i) ? 'checked' : '';
+    html += '<div class="opt-row">' +
+      '<input type="radio" name="c_' + qid + '" value="' + i + '" ' + checked + '>' +
+      '<input class="opt input" placeholder="Вариант ' + (i + 1) + '" value="' + optVal + '">' +
+    '</div>';
+  }
+  html += '<div class="muted" style="font-size:12.5px">◉ Отметьте правильный вариант</div>';
+  div.innerHTML = html;
+  list.appendChild(div);
+}
+
+function renumber(){
+  var blocks = document.querySelectorAll('#qList .q-block');
+  for (var i = 0; i < blocks.length; i++) {
+    var span = blocks[i].querySelector('.q-head span');
+    if (span) span.textContent = 'ВОПРОС ' + (i + 1);
+  }
+}
+
+function saveTest(){
+  var title = $('tTitle').value.trim();
+  var desc = $('tDesc').value.trim();
+  if (!title) { alert('Введите название'); return; }
+
+  var blocks = document.querySelectorAll('#qList .q-block');
+  if (!blocks.length) { alert('Добавьте вопрос'); return; }
+
+  var questions = [];
+  for (var i = 0; i < blocks.length; i++) {
+    var b = blocks[i];
+    var q = b.querySelector('.q-text').value.trim();
+    var optInputs = b.querySelectorAll('.opt');
+    var opts = [];
+    for (var k = 0; k < optInputs.length; k++) {
+      var v = optInputs[k].value.trim();
+      if (v) opts.push(v);
+    }
+    var radio = b.querySelector('input[type=radio]:checked');
+
+    if (!q) { alert('Заполните текст вопроса'); return; }
+    if (opts.length < 2) { alert('Нужно минимум 2 варианта ответа'); return; }
+    if (!radio) { alert('Отметьте правильный ответ'); return; }
+
+    var correct = Number(radio.value);
+    if (correct >= opts.length) { alert('Правильный ответ указывает на пустой вариант'); return; }
+    questions.push({ q: q, options: opts, correct: correct });
+  }
+
+  tests.push({ id: uid(), title: title, desc: desc, questions: questions, created: Date.now() });
+  saveLocal(); schedulePush();
+  closeModal();
+  renderTests(); renderHome(); renderAdmin();
+}
+
+/* ==========================================================
+   АДМИН
+   ========================================================== */
+function applyAdminUI(){
+  document.body.classList.toggle('is-admin', isAdmin);
+  if (!document.getElementById('adminStyle')) {
+    var s = document.createElement('style');
+    s.id = 'adminStyle';
+    s.textContent = '.admin-only{display:none!important} body.is-admin .admin-only{display:inline-flex!important}';
+    document.head.appendChild(s);
+  }
+}
+
+function login(){
+  var p = $('passInput').value;
+  var real = localStorage.getItem(K.P) || 'admin';
+  if (p === real) {
+    isAdmin = true;
+    $('passErr').textContent = '';
+    $('passInput').value = '';
+    applyAdminUI();
+    renderAdmin(); renderMaterials(); renderTests();
+  } else {
+    $('passErr').textContent = '❌ Неверный пароль';
+  }
+}
+
+function logout(){
+  isAdmin = false;
+  applyAdminUI();
+  renderAdmin(); renderMaterials(); renderTests();
+}
+
+function renderAdmin(){
+  var gate = $('adminGate');
+  var panel = $('adminPanel');
+  if (!isAdmin) {
+    gate.classList.remove('hidden');
+    panel.classList.add('hidden');
+    return;
+  }
+  gate.classList.add('hidden');
+  panel.classList.remove('hidden');
+
+  renderSharePanel();
+  renderCloudPanel();
+  renderResultsTable();
+  renderAdminTables();
+}
+
+function renderSharePanel(){
+  var url = getShareUrl();
+  var sp = $('sharePanel');
+  var html = '<p style="margin-bottom:10px">Отправьте эту ссылку ученикам — они увидят ваш сайт:</p>' +
+    '<div class="share-box">' +
+      '<code>' + esc(url) + '</code>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start">' +
+        '<div class="qr-box" id="adminQR" style="width:170px;height:170px;background:#fff;border-radius:14px;padding:8px;display:flex;align-items:center;justify-content:center;overflow:hidden"></div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px">' +
+          '<button class="btn small" id="copyShareBtn">📋 Скопировать ссылку</button>' +
+          '<button class="btn small alt" id="refreshQRBtn">🔄 Обновить QR</button>' +
+        '</div>' +
+      '</div>' +
+      (location.protocol === 'file:' ? '<div class="notice">⚠️ Сайт открыт локально. Чтобы поделиться — опубликуйте его (Netlify Drop, GitHub Pages).</div>' : '') +
+    '</div>';
+  sp.innerHTML = html;
+  generateQR($('adminQR'), url);
+  $('copyShareBtn').addEventListener('click', function(){ copyShare(url); });
+  $('refreshQRBtn').addEventListener('click', function(){ updateQR(); generateQR($('adminQR'), getShareUrl()); });
+}
+
+function renderCloudPanel(){
+  var cb = $('cloudBox');
+  if (cloudBlobId) {
+    cb.innerHTML =
+      '<div class="notice ok">✅ Облако активно. Устройства синхронизируются каждые 20 секунд.</div>' +
+      '<p style="margin:12px 0">ID облака: <b>' + esc(cloudBlobId) + '</b></p>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+        '<button class="btn small" id="cloudRefreshBtn">🔄 Обновить сейчас</button>' +
+        '<button class="btn small warm" id="cloudPushBtn">⬆ Отправить в облако</button>' +
+        '<button class="btn small ghost" id="cloudDisconnectBtn">❌ Отключить</button>' +
+      '</div>' +
+      '<p class="muted" style="font-size:12.5px;margin-top:10px">Ссылка для учеников содержит ID облака — они видят те же материалы, а результаты появятся здесь.</p>';
+    $('cloudRefreshBtn').addEventListener('click', function(){ cloudRefresh(false); });
+    $('cloudPushBtn').addEventListener('click', function(){ forcePush(); });
+    $('cloudDisconnectBtn').addEventListener('click', function(){
+      if (confirm('Отключить облако? Данные останутся у вас локально.')) disconnectCloud();
+    });
+  } else {
+    cb.innerHTML =
+      '<div class="notice">ℹ️ Сейчас данные хранятся только в этом браузере. Чтобы ученики видели материалы, а их результаты приходили вам — создайте облако.</div>' +
+      '<button class="btn" style="margin-top:12px" id="cloudCreateBtn">☁️ Создать облако</button>';
+    $('cloudCreateBtn').addEventListener('click', function(){ createCloud(); });
+  }
+}
+
+function renderResultsTable(){
+  var filter = $('resFilter');
+  var cur = filter.value;
+  var titles = [];
+  var seen = {};
+  for (var i = 0; i < results.length; i++) {
+    var tt = results[i].testTitle;
+    if (!seen[tt]) { seen[tt] = true; titles.push(tt); }
+  }
+  var opts = '<option value="">Все тесты</option>';
+  for (var k = 0; k < titles.length; k++) {
+    opts += '<option value="' + esc(titles[k]) + '">' + esc(titles[k]) + '</option>';
+  }
+  filter.innerHTML = opts;
+  if (titles.indexOf(cur) !== -1) filter.value = cur;
+
+  var list = results.slice().sort(function(a, b){ return b.date - a.date; });
+  if (filter.value) {
+    var filtered = [];
+    for (var m = 0; m < list.length; m++) if (list[m].testTitle === filter.value) filtered.push(list[m]);
+    list = filtered;
+  }
+
+  var cnt = list.length;
+  var avgTxt = '';
+  if (cnt) {
+    var sum = 0;
+    for (var j = 0; j < list.length; j++) sum += list[j].percent;
+    avgTxt = ' · средний: ' + Math.round(sum / list.length) + '%';
+  }
+  $('resCount').textContent = '· всего: ' + cnt + avgTxt;
+
+  var table = $('resTable');
+  if (!list.length) {
+    table.innerHTML = '<tr><td style="padding:26px;text-align:center;color:#6f6a95">Пока нет результатов.</td></tr>';
+    return;
+  }
+
+  var html = '<thead><tr><th>Дата</th><th>Имя</th><th>Тест</th><th>Балл</th><th>%</th><th>Оценка</th><th></th></tr></thead><tbody>';
+  for (var n = 0; n < list.length; n++) {
+    var r = list[n];
+    var cls = r.percent >= 70 ? 'g' : (r.percent >= 40 ? 'y' : 'r');
+    var mark = r.percent >= 85 ? '5' : (r.percent >= 70 ? '4' : (r.percent >= 50 ? '3' : '2'));
+    html += '<tr>' +
+      '<td>' + fmtDate(r.date) + '</td>' +
+      '<td><b>' + esc(r.name) + '</b></td>' +
+      '<td>' + esc(r.testTitle) + '</td>' +
+      '<td>' + r.score + ' / ' + r.total + '</td>' +
+      '<td><span class="badge ' + cls + '">' + r.percent + '%</span></td>' +
+      '<td><b>' + mark + '</b></td>' +
+      '<td><button class="row-del" data-del-res="' + esc(r.id) + '">🗑</button></td>' +
+    '</tr>';
+  }
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+function renderAdminTables(){
+  var testsDiv = $('admTests');
+  if (!tests.length) {
+    testsDiv.innerHTML = '<p class="muted">Тестов нет.</p>';
+  } else {
+    var html = '<div class="table-scroll"><table><thead><tr><th>Название</th><th>Вопросов</th><th>Прохождений</th><th></th></tr></thead><tbody>';
+    for (var i = 0; i < tests.length; i++) {
+      var t = tests[i];
+      var cnt = 0;
+      for (var j = 0; j < results.length; j++) if (results[j].testId === t.id) cnt++;
+      html += '<tr>' +
+        '<td><b>' + esc(t.title) + '</b></td>' +
+        '<td>' + t.questions.length + '</td>' +
+        '<td>' + cnt + '</td>' +
+        '<td><button class="row-del" data-del-test="' + esc(t.id) + '">🗑</button></td>' +
+      '</tr>';
+    }
+    html += '</tbody></table></div>';
+    testsDiv.innerHTML = html;
+  }
+
+  var matsDiv = $('admMats');
+  if (!materials.length) {
+    matsDiv.innerHTML = '<p class="muted">Материалов нет.</p>';
+  } else {
+    var list = materials.slice().sort(function(a, b){ return b.date - a.date; });
+    var html2 = '<div class="table-scroll"><table><thead><tr><th>Название</th><th>Категория</th><th>Тип</th><th>Дата</th><th></th></tr></thead><tbody>';
+    for (var k = 0; k < list.length; k++) {
+      var m = list[k];
+      html2 += '<tr>' +
+        '<td><b>' + esc(m.title) + '</b></td>' +
+        '<td>' + esc(m.category) + '</td>' +
+        '<td>' + typeIcon(m.type) + ' ' + m.type + '</td>' +
+        '<td>' + fmtDate(m.date) + '</td>' +
+        '<td><button class="row-del" data-del-mat="' + esc(m.id) + '">🗑</button></td>' +
+      '</tr>';
+    }
+    html2 += '</tbody></table></div>';
+    matsDiv.innerHTML = html2;
+  }
+}
+
+function createCloud(){
+  setStatus('pending');
+  cloudCreate()
+    .then(function(){ return cloudPush(); })
+    .then(function(){
+      setStatus('ok');
+      startCloudAuto();
+      updateQR();
+      renderAdmin();
+      alert('✅ Облако создано! Ссылка для учеников обновилась.');
+    })
+    .catch(function(err){
+      setStatus('err');
+      alert('Не удалось создать облако: ' + err.message + '\n\nСайт продолжит работать локально.');
+    });
+}
+
+function forcePush(){
+  cloudPush()
+    .then(function(){ setStatus('ok'); alert('✅ Данные отправлены в облако'); })
+    .catch(function(err){ setStatus('err'); alert('Ошибка: ' + err.message); });
+}
+
+function copyShare(url){
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url)
+      .then(function(){ alert('✅ Ссылка скопирована!'); })
+      .catch(function(){ prompt('Скопируйте ссылку:', url); });
+  } else {
+    prompt('Скопируйте ссылку:', url);
+  }
+}
+
+function delResult(id){
+  var next = [];
+  for (var i = 0; i < results.length; i++) if (results[i].id !== id) next.push(results[i]);
+  results = next;
+  saveLocal(); schedulePush();
+  renderAdmin(); renderHome();
+}
+
+function clearResults(){
+  if (!confirm('Удалить ВСЕ результаты? Действие необратимо.')) return;
+  results = [];
+  saveLocal(); schedulePush();
+  renderAdmin(); renderHome();
+}
+
+function changePass(){
+  var v = $('newPass').value.trim();
+  if (v.length < 4) { alert('Минимум 4 символа'); return; }
+  localStorage.setItem(K.P, v);
+  $('newPass').value = '';
+  alert('✅ Пароль изменён!');
+}
+
+function exportCSV(){
+  if (!results.length) { alert('Нет данных'); return; }
+  var rows = [['Дата', 'Имя', 'Тест', 'Балл', 'Всего', 'Процент']];
+  var list = results.slice().sort(function(a, b){ return b.date - a.date; });
+  for (var i = 0; i < list.length; i++) {
+    var r = list[i];
+    rows.push([fmtDate(r.date), r.name, r.testTitle, r.score, r.total, r.percent + '%']);
+  }
+  var lines = [];
+  for (var k = 0; k < rows.length; k++) {
+    var cells = [];
+    for (var m = 0; m < rows[k].length; m++) {
+      cells.push('"' + String(rows[k][m]).replace(/"/g, '""') + '"');
+    }
+    lines.push(cells.join(';'));
+  }
+  var csv = '\uFEFF' + lines.join('\n');
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rezultaty_' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* ==========================================================
+   МОДАЛКА
+   ========================================================== */
+function openModal(html){
+  $('modalBox').innerHTML = html;
+  $('modalBack').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  $('modalBack').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ==========================================================
+   ДЕЛЕГИРОВАНИЕ СОБЫТИЙ
+   ========================================================== */
+document.addEventListener('click', function(e){
+  var el = e.target;
+
+  // data-goto — перейти на вкладку
+  var gotoEl = el.closest('[data-goto]');
+  if (gotoEl) { go(gotoEl.getAttribute('data-goto')); return; }
+
+  // nav-btn — переключить вкладку
+  var navBtn = el.closest('.nav-btn');
+  if (navBtn) { go(navBtn.getAttribute('data-tab')); return; }
+
+  // quick-card — фильтр по категории
+  var quickCard = el.closest('.quick-card');
+  if (quickCard) {
+    go('materials');
+    $('matCat').value = quickCard.getAttribute('data-cat');
+    renderMaterials();
+    return;
+  }
+
+  // data-open-modal
+  var openModalEl = el.closest('[data-open-modal]');
+  if (openModalEl) {
+    var what = openModalEl.getAttribute('data-open-modal');
+    if (what === 'material') openMaterialModal();
+    if (what === 'test') openTestModal();
+    return;
+  }
+
+  // data-close-modal
+  if (el.closest('[data-close-modal]')) { closeModal(); return; }
+
+  // data-close-runner
+  if (el.closest('[data-close-runner]')) { closeRunner(); renderTests(); return; }
+
+  // data-show-text
+  var showTextBtn = el.closest('[data-show-text]');
+  if (showTextBtn) { showText(showTextBtn.getAttribute('data-show-text')); return; }
+
+  // data-del-mat
+  var delMat = el.closest('[data-del-mat]');
+  if (delMat) { delMaterial(delMat.getAttribute('data-del-mat')); return; }
+
+  // data-del-test
+  var delTestBtn = el.closest('[data-del-test]');
+  if (delTestBtn) { delTest(delTestBtn.getAttribute('data-del-test')); return; }
+
+  // data-del-res
+  var delRes = el.closest('[data-del-res]');
+  if (delRes) { delResult(delRes.getAttribute('data-del-res')); return; }
+
+  // data-start-test
+  var startBtn = el.closest('[data-start-test]');
+  if (startBtn) { startTest(startBtn.getAttribute('data-start-test')); return; }
+
+  // data-remove-q
+  var removeQ = el.closest('[data-remove-q]');
+  if (removeQ) {
+    var block = removeQ.closest('.q-block');
+    if (block) { block.parentNode.removeChild(block); renumber(); }
+    return;
+  }
+});
+
+// Клик по фону модалки — закрыть
+$('modalBack').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+
+// Escape — закрыть
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ==========================================================
+   ПРИВЯЗКА ОСТАЛЬНЫХ ОБРАБОТЧИКОВ
+   ========================================================== */
+$('matSearch').addEventListener('input', renderMaterials);
+$('matCat').addEventListener('change', renderMaterials);
+$('resFilter').addEventListener('change', renderResultsTable);
+$('loginBtn').addEventListener('click', login);
+$('logoutBtn').addEventListener('click', logout);
+$('changePassBtn').addEventListener('click', changePass);
+$('clearResultsBtn').addEventListener('click', clearResults);
+$('exportBtn').addEventListener('click', exportCSV);
+$('passInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') login(); });
+
+/* ==========================================================
+   ОБЩИЙ РЕНДЕР
+   ========================================================== */
+function renderAll(){
+  renderHome();
+  renderMaterials();
+  renderTests();
+  if (isAdmin) renderAdmin();
+}
+
+/* ==========================================================
+   СТАРТ
+   ========================================================== */
+(function init(){
+  seed();
+  loadLocal();
+  applyAdminUI();
+  $('year').textContent = new Date().getFullYear();
+
+  var hashParams = new URLSearchParams(location.hash.replace(/^#/, ''));
+  var fromHash = hashParams.get('cloud');
+  if (fromHash) {
+    cloudBlobId = fromHash;
+    localStorage.setItem(K.BLOB, fromHash);
+  } else {
+    cloudBlobId = localStorage.getItem(K.BLOB) || null;
+  }
+
+  renderAll();
+
+  if (cloudBlobId) {
+    setStatus('pending');
+    cloudRefresh(false).then(function(){ startCloudAuto(); });
+  } else {
+    setStatus('local');
+  }
+
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && cloudBlobId) cloudRefresh(true);
+  });
+})();
+</script>
+</body>
+</html>
