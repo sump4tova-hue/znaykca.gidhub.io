@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>ЗнайКа — учебные материалы и тесты</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p1:#ff4d6d;--p2:#ffb703;--p3:#06d6a0;--p4:#4361ee;--p5:#9d4edd;--ink:#17123a;--muted:#6f6a95;--bg:#fdf7ff;--card:#fff;--r:20px;--sh:0 12px 34px rgba(70,20,140,.13)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;position:relative}
+body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(90px);opacity:.35;z-index:-1}
+body::before{width:420px;height:420px;background:var(--p1);top:-140px;left:-120px}
+body::after{width:460px;height:460px;background:var(--p4);bottom:-180px;right:-140px}
+.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(100deg,var(--p1),var(--p5) 55%,var(--p4));box-shadow:0 6px 24px rgba(90,20,160,.28)}
+.topbar-in{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:12px 0}
+.wrap{max-width:1140px;margin:0 auto;padding:0 18px}
+.logo{display:flex;align-items:center;gap:9px;color:#fff;font-size:23px;font-weight:800;cursor:pointer}
+.logo b{color:var(--p2)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.nav-btn{border:0;cursor:pointer;font:inherit;font-weight:600;font-size:14.5px;padding:9px 16px;border-radius:999px;color:#fff;background:rgba(255,255,255,.16);transition:.2s;white-space:nowrap}
+.nav-btn:hover{background:rgba(255,255,255,.32)}
+.nav-btn.active{background:#fff;color:var(--p5)}
+.sync-dot{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#fff;background:rgba(0,0,0,.18);padding:5px 11px;border-radius:999px;font-weight:700}
+.sync-dot i{width:8px;height:8px;border-radius:50%;background:#ffd166;display:inline-block;animation:pulse 1.4s infinite}
+.sync-dot.ok i{background:#06d6a0;animation:none}
+.sync-dot.err i{background:#ff4d6d;animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+main{padding:26px 0 70px}
+.tab{display:none;animation:fade .35s}
+.tab.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.btn{border:0;cursor:pointer;font:inherit;font-weight:700;font-size:15px;padding:12px 22px;border-radius:14px;color:#fff;background:linear-gradient(135deg,var(--p1),var(--p5));box-shadow:0 8px 20px rgba(157,78,221,.32);transition:.2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{transform:translateY(-2px)}
+.btn.alt{background:linear-gradient(135deg,var(--p3),var(--p4))}
+.btn.warm{background:linear-gradient(135deg,var(--p2),var(--p1))}
+.btn.small{padding:8px 15px;font-size:13.5px;border-radius:11px}
+.btn.big{padding:15px 28px;font-size:16.5px}
+.btn.ghost{background:#f0ecff;color:var(--p5);box-shadow:none}
+.btn.danger{background:linear-gradient(135deg,#ff5c5c,#c9184a)}
+.input{font:inherit;padding:12px 15px;border-radius:13px;border:2px solid #ece6ff;background:#fff;color:var(--ink);width:100%;outline:none;transition:.2s}
+.input:focus{border-color:var(--p5);box-shadow:0 0 0 4px rgba(157,78,221,.14)}
+label.lbl{display:block;font-weight:700;font-size:13.5px;margin:14px 0 6px;color:var(--muted)}
+h2{font-size:27px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.sec-title{font-size:22px;margin:34px 0 16px}
+.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;align-items:center;background:linear-gradient(130deg,#fff 0%,#fff4fb 45%,#eef1ff 100%);border-radius:28px;padding:38px;box-shadow:var(--sh);border:2px solid #fff;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,var(--p2),transparent 70%);opacity:.35;top:-70px;right:-40px}
+.hero h1{font-size:44px;line-height:1.1;letter-spacing:-1.4px;margin-bottom:14px}
+.hero h1 span{background:linear-gradient(120deg,var(--p1),var(--p5),var(--p4));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:17px;color:var(--muted);margin-bottom:24px;max-width:520px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-qr{background:#fff;border-radius:24px;padding:18px;text-align:center;box-shadow:var(--sh);border:2px dashed #e6dcff}
+.hero-qr img{width:100%;max-width:230px;border-radius:14px;display:block;margin:0 auto}
+.hero-qr span{display:block;margin-top:10px;font-weight:700;color:var(--muted);font-size:13px}
+.hero-qr a{display:inline-block;margin-top:8px;color:var(--p5);font-weight:700;font-size:13px;text-decoration:none;word-break:break-all}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-top:26px}
+.stat{border-radius:var(--r);padding:20px 22px;color:#fff;box-shadow:var(--sh)}
+.stat:nth-child(1){background:linear-gradient(135deg,#ff4d6d,#ff8fa3)}
+.stat:nth-child(2){background:linear-gradient(135deg,#ffb703,#ffd166)}
+.stat:nth-child(3){background:linear-gradient(135deg,#06d6a0,#4ad9c0)}
+.stat:nth-child(4){background:linear-gradient(135deg,#4361ee,#7b8cff)}
+.stat b{display:block;font-size:34px;line-height:1}
+.stat span{font-size:13.5px;opacity:.95;font-weight:600}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.quick-card{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--sh);cursor:pointer;transition:.22s;border:2px solid transparent;text-align:center}
+.quick-card:hover{transform:translateY(-5px);border-color:var(--p5)}
+.quick-card .ic{font-size:38px;display:block;margin-bottom:10px}
+.quick-card b{display:block;font-size:16px;margin-bottom:4px}
+.quick-card small{color:var(--muted)}
+.toolbar{display:grid;grid-template-columns:1fr 220px;gap:12px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:18px}
+.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:10px;transition:.22s;border-top:5px solid var(--p5);animation:fade .3s}
+.card:hover{transform:translateY(-4px)}
+.card h3{font-size:17.5px;line-height:1.3}
+.card p{font-size:14.5px;color:var(--muted);flex:1}
+.mat-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chip{font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;background:var(--c);color:#fff}
+.type-ico{font-size:22px}
+.mat-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.empty{text-align:center;padding:54px 20px;color:var(--muted);background:#fff;border-radius:var(--r);border:2px dashed #e8e0ff;font-size:16px}
+.empty .big-ic{font-size:52px;display:block;margin-bottom:10px}
+.runner{background:#fff;border-radius:26px;padding:28px;box-shadow:var(--sh);border:2px solid #f3edff}
+.q-card{background:#faf8ff;border-radius:16px;padding:18px;margin:14px 0;border-left:5px solid var(--p4)}
+.q-title{font-weight:700;font-size:16px;margin-bottom:12px}
+.ans{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:12px;background:#fff;margin-bottom:8px;cursor:pointer;transition:.18s;border:2px solid #efeaff;font-size:15px}
+.ans:hover{border-color:var(--p5);background:#faf7ff}
+.ans input{accent-color:var(--p5);width:18px;height:18px;cursor:pointer}
+.result-box{margin-top:20px;padding:24px;border-radius:20px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--p3),var(--p4));box-shadow:var(--sh)}
+.result-box.bad{background:linear-gradient(135deg,#ff8fa3,var(--p1))}
+.result-box .score{font-size:46px;font-weight:900;line-height:1.1}
+.gate{max-width:430px;margin:40px auto;background:#fff;border-radius:26px;padding:34px;box-shadow:var(--sh);text-align:center;border:2px solid #f3edff}
+.gate .lock{font-size:52px;display:block;margin-bottom:12px}
+.admin-block{background:#fff;border-radius:22px;padding:24px;box-shadow:var(--sh);margin-bottom:22px}
+.admin-block h3{font-size:19px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1.5px solid #f3efff}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.badge{display:inline-block;padding:4px 11px;border-radius:999px;font-weight:800;font-size:12.5px;color:#fff}
+.badge.g{background:var(--p3)}.badge.y{background:var(--p2)}.badge.r{background:var(--p1)}
+.row-del{background:none;border:0;cursor:pointer;font-size:17px;opacity:.55;transition:.2s}
+.row-del:hover{opacity:1;transform:scale(1.18)}
+.table-scroll{overflow-x:auto}
+.modal-back{position:fixed;inset:0;background:rgba(23,18,58,.55);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:200}
+.modal-back.open{display:flex}
+.modal{background:#fff;border-radius:26px;padding:28px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 30px 70px rgba(0,0,0,.35);animation:pop .28s cubic-bezier(.2,1.2,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.93) translateY(18px)}to{opacity:1;transform:none}}
+.modal h2{font-size:23px;margin-bottom:6px}
+.modal-actions{display:flex;gap:11px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+.q-block{background:#faf8ff;border-radius:16px;padding:16px;margin-bottom:14px;border:2px solid #f0eaff}
+.q-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:13px;color:var(--muted);margin-bottom:10px}
+.x{background:#ffe3e9;border:0;color:var(--p1);width:28px;height:28px;border-radius:9px;cursor:pointer;font-weight:800;transition:.2s}
+.x:hover{background:var(--p1);color:#fff}
+.opt-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.opt-row input[type=radio]{width:20px;height:20px;accent-color:var(--p3);cursor:pointer;flex-shrink:0}
+.share-box{background:linear-gradient(135deg,#f0ecff,#e8f4ff);border-radius:16px;padding:18px;margin-top:14px;border:2px dashed #c9b8ff}
+.share-box code{display:block;background:#fff;padding:12px;border-radius:10px;margin:10px 0;word-break:break-all;font-size:13px;border:2px solid #ece6ff;color:var(--p5);font-weight:700}
+footer{text-align:center;padding:26px 18px 40px;color:var(--muted);font-size:13.5px}
+@media(max-width:820px){.hero{grid-template-columns:1fr;padding:26px}.hero h1{font-size:33px}.toolbar{grid-template-columns:1fr}.nav{width:100%;margin-left:0}.nav-btn{flex:1;text-align:center;padding:9px 8px;font-size:13px}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <div class="logo" onclick="go('home')">
+      <span style="font-size:26px">📚</span><span>Знай<b>Ка</b></span>
+    </div>
+    <nav class="nav">
+      <span id="syncStatus" class="sync-dot" title="Состояние синхронизации"><i></i><span>локально</span></span>
+      <button class="nav-btn active" data-tab="home">🏠 Главная</button>
+      <button class="nav-btn" data-tab="materials">📂 Материалы</button>
+      <button class="nav-btn" data-tab="tests">🧠 Тесты</button>
+      <button class="nav-btn" data-tab="admin">🔐 Админ</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="tab-home" class="tab active">
+    <div class="hero">
+      <div>
+        <h1>Учись <span>ярко</span> и с удовольствием! 🚀</h1>
+        <p>Конспекты, презентации, ссылки и интерактивные тесты — в одном месте. Все данные синхронизируются между устройствами.</p>
+        <div class="hero-btns">
+          <button class="btn big" onclick="go('materials')">📂 Материалы</button>
+          <button class="btn big alt" onclick="go('tests')">🧠 Пройти тест</button>
+        </div>
+      </div>
+      <div class="hero-qr">
+        <img id="qrImg" alt="QR-код">
+        <span>📱 Наведи камеру телефона</span>
+        <a id="qrLink" href="#" target="_blank"></a>
+      </div>
+    </div>
+    <div class="stats" id="statsRow"></div>
+    <h2 class="sec-title">⚡ Быстрый доступ</h2>
+    <div class="quick" id="quickRow"></div>
+  </section>
+
+  <section id="tab-materials" class="tab">
+    <div class="sec-head">
+      <h2>📂 Учебные материалы</h2>
+      <button class="btn admin-only" onclick="openMaterialModal()">＋ Добавить материал</button>
+    </div>
+    <div class="toolbar">
+      <input id="matSearch" class="input" placeholder="🔍 Поиск...">
+      <select id="matCat" class="input"></select>
+    </div>
+    <div class="grid" id="matGrid"></div>
+  </section>
+
+  <section id="tab-tests" class="tab">
+    <div class="sec-head">
+      <h2>🧠 Тестирования</h2>
+      <button class="btn admin-only" onclick="openTestModal()">＋ Создать тест</button>
+    </div>
+    <div class="grid" id="testGrid"></div>
+    <div id="testRunner" class="runner hidden"></div>
+  </section>
+
+  <section id="tab-admin" class="tab">
+    <div id="adminGate">
+      <div class="gate">
+        <span class="lock">🔐</span>
+        <h2>Вход для администратора</h2>
+        <p class="muted" style="margin:10px 0 18px">Пароль по умолчанию: <b>admin</b></p>
+        <input id="passInput" type="password" class="input" placeholder="Пароль" onkeydown="if(event.key==='Enter')login()">
+        <div id="passErr" style="color:var(--p1);margin-top:10px;font-weight:700"></div>
+        <button class="btn big" style="margin-top:18px;width:100%;justify-content:center" onclick="login()">Войти</button>
+      </div>
+    </div>
+
+    <div id="adminPanel" class="hidden">
+      <div class="sec-head">
+        <h2>🔐 Панель администратора</h2>
+        <button class="btn ghost" onclick="logout()">Выйти</button>
+      </div>
+
+      <div class="admin-block">
+        <h3>☁️ Облачная синхронизация</h3>
+        <div id="cloudBox"></div>
+      </div>
+
+      <div class="admin-block">
+        <h3>📊 Результаты тестирований <span class="muted" id="resCount" style="font-weight:500;font-size:14px"></span></h3>
+        <div class="toolbar" style="margin-bottom:14px">
+          <select id="resFilter" class="input" onchange="renderAdmin()"></select>
+          <button class="btn warm" onclick="exportCSV()">⬇ Скачать CSV</button>
+        </div>
+        <div class="table-scroll"><table id="resTable"></table></div>
+      </div>
+
+      <div class="admin-block"><h3>🧠 Управление тестами</h3><div id="admTests"></div></div>
+      <div class="admin-block"><h3>📂 Управление материалами</h3><div id="admMats"></div></div>
+
+      <div class="admin-block">
+        <h3>⚙️ Настройки</h3>
+        <label class="lbl">Новый пароль администратора</label>
+        <div class="toolbar">
+          <input id="newPass" class="input" type="text" placeholder="Новый пароль">
+          <button class="btn" onclick="changePass()">Сменить пароль</button>
+        </div>
+        <label class="lbl" style="margin-top:22px">Опасная зона</label>
+        <button class="btn danger" onclick="clearResults()">🗑 Очистить все результаты</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>ЗнайКа © <span id="year"></span> · Учебный портал</footer>
+
+<div class="modal-back" id="modalBack" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<script>
+/* =========================================================
+   ОБЛАКО — синхронизация через jsonblob.com (без регистрации)
+   ========================================================= */
+const CLOUD_BASE = 'https://jsonblob.com/api/jsonBlob';
+const Cloud = {
+  blobId: null,
+  interval: null,
+  lastHash: '',
+
+  init() {
+    const h = new URLSearchParams(location.hash.replace(/^#/,''));
+    const fromHash = h.get('cloud');
+    if (fromHash) {
+      this.blobId = fromHash;
+      localStorage.setItem('zk_blobId', fromHash);
+    } else {
+      this.blobId = localStorage.getItem('zk_blobId') || null;
+    }
+    this.setStatus(this.blobId ? 'pending' : 'local');
+  },
+
+  setStatus(s, text) {
+    const el = document.getElementById('syncStatus');
+    if (!el) return;
+    el.classList.remove('ok','err');
+    if (s === 'ok') { el.classList.add('ok'); el.querySelector('span').textContent = 'синхронизировано'; }
+    else if (s === 'err') { el.classList.add('err'); el.querySelector('span').textContent = 'ошибка'; }
+    else if (s === 'pending') { el.querySelector('span').textContent = 'синхронизация...'; }
+    else if (s === 'local') { el.querySelector('span').textContent = 'локально'; }
+    else if (text) { el.querySelector('span').textContent = text; }
+  },
+
+  async create() {
+    const data = { materials, tests, results, createdAt: Date.now(), version: 1 };
+    const res = await fetch(CLOUD_BASE, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
+      body: JSON.stringify(data),
+      cache: 'no-store'
+    });
+    if (!res.ok) throw new Error('Create failed: ' + res.status);
+    const loc = res.headers.get('Location') || res.headers.get('location');
+    if (!loc) throw new Error('Не получен Location. Проверьте соединение.');
+    this.blobId = loc.split('/').pop();
+    localStorage.setItem('zk_blobId', this.blobId);
+    return this.blobId;
+  },
+
+  async pull() {
+    if (!this.blobId) return null;
+    const res = await fetch(CLOUD_BASE + '/' + this.blobId + '?t=' + Date.now(), {
+      cache: 'no-store',
+      headers: { 'Accept':'application/json' }
+    });
+    if (!res.ok) throw new Error('Pull failed: ' + res.status);
+    return await res.json();
+  },
+
+  async push() {
+    if (!this.blobId) return;
+    const data = { materials, tests, results, updatedAt: Date.now() };
+    const res = await fetch(CLOUD_BASE + '/' + this.blobId, {
+      method: 'PUT',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify(data),
+      cache: 'no-store'
+    });
+    if (!res.ok) throw new Error('Push failed: ' + res.status);
+  },
+
+  startAutoSync() {
+    if (this.interval) clearInterval(this.interval);
+    if (!this.blobId) return;
+    this.interval = setInterval(() => this.refresh(), 20000);
+  },
+
+  stopAutoSync() { if (this.interval) { clearInterval(this.interval); this.interval = null; } },
+
+  async refresh(silent = true) {
+    if (!this.blobId) return;
+    try {
+      const data = await this.pull();
+      if (!data) return;
+      const hash = JSON.stringify({m:data.materials, t:data.tests, r:data.results});
+      if (hash === this.lastHash) { this.setStatus('ok'); return; }
+      this.lastHash = hash;
+      materials = data.materials || [];
+      tests = data.tests || [];
+      results = data.results || [];
+      saveLocal();
+      renderAll();
+      this.setStatus('ok');
+    } catch (e) {
+      this.setStatus('err');
+      if (!silent) alert('Ошибка синхронизации: ' + e.message);
+    }
+  },
+
+  async share(link) {
+    // При принудительном обновлении — пушим и обновляем
+    try { await this.push(); this.setStatus('ok'); }
+    catch (e) { this.setStatus('err'); }
+  },
+
+  disconnect() {
+    this.stopAutoSync();
+    this.blobId = null;
+    localStorage.removeItem('zk_blobId');
+    history.replaceState(null, '', location.pathname + location.search);
+    this.setStatus('local');
+    renderAdmin();
+  }
+};
+
+/* =========================================================
+   ХРАНИЛИЩЕ
+   ========================================================= */
+const K = { M:'zk_materials', T:'zk_tests', R:'zk_results', P:'zk_pass', SEED:'zk_seeded' };
+const LS = {
+  get(k,d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
+  set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){ console.warn(e); } }
+};
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-3);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate = ts => new Date(ts).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+
+let materials = [], tests = [], results = [], isAdmin = false;
+let pushTimer = null;
+
+function saveLocal() {
+  LS.set(K.M, materials); LS.set(K.T, tests); LS.set(K.R, results);
+}
+function scheduleCloudPush() {
+  if (!Cloud.blobId) return;
+  Cloud.setStatus('pending');
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(async () => {
+    try { await Cloud.push(); Cloud.lastHash = JSON.stringify({m:materials, t:tests, r:results}); Cloud.setStatus('ok'); }
+    catch(e){ Cloud.setStatus('err'); }
+  }, 700);
+}
+
+/* =========================================================
+   ДЕМО-ДАННЫЕ
+   ========================================================= */
+function seed(){
+  if (localStorage.getItem(K.SEED)) return;
+  materials = [
+    { id:uid(), title:'Строение клетки: конспект', category:'Биология', type:'text', date:Date.now()-86400000*2,
+      desc:'Основные органоиды клетки и их функции.',
+      content:'КЛЕТКА — элементарная единица живого.\n\n• Мембрана — защита и транспорт.\n• Цитоплазма — внутренняя среда.\n• Ядро — ДНК, управление.\n• Митохондрии — синтез АТФ.\n• Рибосомы — синтез белка.\n• ЭПС — транспорт.\n• Аппарат Гольджи — упаковка.\n• Лизосомы — расщепление.\n• Хлоропласты — фотосинтез.' },
+    { id:uid(), title:'Презентация: Вторая мировая война', category:'История', type:'link', date:Date.now()-86400000*5,
+      desc:'Основные даты и события.', url:'https://ru.wikipedia.org/wiki/Вторая_мировая_война' },
+    { id:uid(), title:'Формулы по физике 7–9 класс', category:'Физика', type:'text', date:Date.now()-86400000*8,
+      desc:'Шпаргалка по основным формулам.',
+      content:'v = S / t\na = (v − v₀) / t\nF = m·a\np = F / S\nA = F·S\nN = A / t\nE = m·v² / 2\nρ = m / V' }
+  ];
+  tests = [
+    { id:uid(), title:'Биология: строение клетки', desc:'Проверь знания органоидов.', created:Date.now()-86400000*2,
+      questions:[
+        {q:'«Энергостанция» клетки?', options:['Ядро','Митохондрия','Рибосома','Лизосома'], correct:1},
+        {q:'Где хранится ДНК?', options:['Цитоплазма','Ядро','Мембрана','Гольджи'], correct:1},
+        {q:'Синтез белка?', options:['Рибосома','Митохондрия','Лизосома','ЭПС'], correct:0},
+        {q:'Пигмент хлоропластов?', options:['Гемоглобин','Меланин','Хлорофилл','Каротин'], correct:2}
+      ]},
+    { id:uid(), title:'Физика: основные формулы', desc:'Мини-тест.', created:Date.now()-86400000*4,
+      questions:[
+        {q:'Формула скорости?', options:['v = S · t','v = S / t','v = t / S','v = m · a'], correct:1},
+        {q:'Второй закон Ньютона?', options:['F = m / a','F = m · a','F = a / m','F = m · g'], correct:1},
+        {q:'Формула давления?', options:['p = F · S','p = F / S','p = S / F','p = m · g'], correct:1}
+      ]}
+  ];
+  results = [];
+  saveLocal();
+  if (!localStorage.getItem(K.P)) localStorage.setItem(K.P, 'admin');
+  localStorage.setItem(K.SEED, '1');
+}
+
+function load(){
+  materials = LS.get(K.M, []);
+  tests = LS.get(K.T, []);
+  results = LS.get(K.R, []);
+}
+
+/* =========================================================
+   НАВИГАЦИЯ
+   ========================================================= */
+function go(tab){
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'materials') renderMaterials();
+  if (tab === 'tests'){ closeRunner(); renderTests(); }
+  if (tab === 'admin') renderAdmin();
+  if (tab === 'home') renderHome();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav-btn').forEach(b => b.onclick = () => go(b.dataset.tab));
+
+/* =========================================================
+   ГЛАВНАЯ
+   ========================================================= */
+const CAT_COLORS = {'Биология':'#06d6a0','История':'#ffb703','Физика':'#4361ee','Информатика':'#9d4edd','Математика':'#ff4d6d','Химия':'#00b4d8','Русский язык':'#e76f51','Английский язык':'#7209b7','География':'#2a9d8f','Литература':'#f72585','Другое':'#6c757d'};
+const catColor = c => CAT_COLORS[c] || '#9d4edd';
+const typeIcon = t => t === 'link' ? '🔗' : t === 'file' ? '📎' : '📝';
+
+function renderHome(){
+  const avg = results.length ? Math.round(results.reduce((s,r)=>s+r.percent,0)/results.length) : 0;
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat"><b>${materials.length}</b><span>📂 материалов</span></div>
+    <div class="stat"><b>${tests.length}</b><span>🧠 тестов</span></div>
+    <div class="stat"><b>${results.length}</b><span>✅ прохождений</span></div>
+    <div class="stat"><b>${avg}%</b><span>📈 средний балл</span></div>`;
+
+  const cats = [...new Set(materials.map(m=>m.category))].slice(0,6);
+  document.getElementById('quickRow').innerHTML = cats.length
+    ? cats.map(c=>`<div class="quick-card" onclick="filterByCat('${esc(c).replace(/'/g,"\\'")}')">
+        <span class="ic" style="color:${catColor(c)}">●</span><b>${esc(c)}</b>
+        <small>${materials.filter(m=>m.category===c).length} материал(ов)</small></div>`).join('')
+    : `<div class="empty" style="grid-column:1/-1"><span class="big-ic">📭</span>Пока нет материалов.</div>`;
+
+  // QR-код всегда ведёт на текущий URL + cloud ID
+  const base = location.href.split('#')[0];
+  const url = Cloud.blobId ? base + '#cloud=' + Cloud.blobId : base;
+  const img = document.getElementById('qrImg');
+  img.onerror = () => { img.outerHTML = '<div style="padding:24px;font-size:13px;color:#6f6a95">QR-код появится после публикации сайта в интернете 🌐</div>'; };
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=460x460&margin=12&data=' + encodeURIComponent(url);
+  const link = document.getElementById('qrLink');
+  link.href = url; link.textContent = url;
+}
+
+function filterByCat(cat){
+  go('materials');
+  document.getElementById('matCat').value = cat;
+  renderMaterials();
+}
+
+/* =========================================================
+   МАТЕРИАЛЫ
+   ========================================================= */
+function renderMaterials(){
+  const cats = [...new Set(materials.map(m=>m.category))].sort();
+  const sel = document.getElementById('matCat');
+  const cur = sel.value;
+  sel.innerHTML = `<option value="">Все категории</option>` + cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  if (cats.includes(cur)) sel.value = cur;
+
+  const q = document.getElementById('matSearch').value.trim().toLowerCase();
+  const cat = sel.value;
+  let list = materials.slice().sort((a,b)=>b.date-a.date);
+  if (cat) list = list.filter(m=>m.category===cat);
+  if (q) list = list.filter(m=>(m.title+' '+(m.desc||'')).toLowerCase().includes(q));
+
+  const grid = document.getElementById('matGrid');
+  if (!list.length){ grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big-ic">🔍</span>Ничего не найдено.</div>`; return; }
+
+  grid.innerHTML = list.map(m=>`
+    <article class="card" rel style="border-top-color:${catColor(m.category)}">
+      <div class="="mat-top">
+        <span class="chipno" style="background:${catColor(mop.category)}">${esc(m.category)}ener</span>
+        <span class="type-ico">${typeIcon(m">.type)}</span>
+      </div>
+      <h3>${esc(m.title)}</h3>
+      <p>${esc(m.desc || 'Без описания')}</p>
+      <div class="muted" style="font-size:12.5px">📅 ${fmtDate(m.date)}</div>
+      <div class="mat-actions">
+        ${m.type==='link' ? `<a class="btn small" href="${esc(m.url)}" target="_blank"🔗 Открыть</a>` : ''}
+        ${m.type==='file' ? `<a class="btn small" href="${esc(m.url)}" download="${esc(m.fileName||'file')}">⬇ Скачать</a>` : ''}
+        ${m.type==='text' ? `<button class="btn small" onclick="showText('${m.id}')">📖 Читать</button>` : ''}
+        <button class="btn small ghost admin-only" onclick="delMaterial('${m.id}')">🗑</button>
+      </div>
+    </article>`).join('');
+  applyAdminUI();
+}
+document.getElementById('matSearch').addEventListener('input', renderMaterials);
+document.getElementById('matCat').addEventListener('change', renderMaterials);
+
+function showText(id){
+  const m = materials.find(x=>x.id===id); if (!m) return;
+  openModal(`<h2>${esc(m.title)}</h2>
+    <div class="muted" style="margin:6px 0 16px">${esc(m.category)} · ${fmtDate(m.date)}</div>
+    <div style="white-space:pre-wrap;line-height:1.7;font-size:15.5px;background:#faf8ff;padding:18px;border-radius:16px">${esc(m.content||'')}</div>
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Закрыть</button></div>`);
+}
+function delMaterial(id){
+  if (!confirm('Удалить материал?')) return;
+  materials = materials.filter(m=>m.id!==id);
+  saveLocal(); scheduleCloudPush(); renderMaterials(); renderHome(); renderAdmin();
+}
+
+function openMaterialModal(){
+  openModal(`<h2>➕ Новый материал</h2>
+    <label class="lbl">Название *</label>
+    <input id="mTitle" class="input" placeholder="Например: Конспект «Фотосинтез»">
+    <label class="lbl">Категория *</label>
+    <input id="mCat2" class="input" list="catList" placeholder="Биология">
+    <datalist id="catList">${Object.keys(CAT_COLORS).map(c=>`<option value="${c}">`).join('')}</datalist>
+    <label class="lbl">Описание</label>
+    <input id="mDesc" class="input" placeholder="О чём материал?">
+    <label class="lbl">Тип</label>
+    <select id="mType" class="input" onchange="toggleMatFields()">
+      <option value="text">📝 Текст</option>
+      <option value="link">🔗 Ссылка</option>
+      <option value="file">📎 Файл (до 2 МБ)</option>
+    </select>
+    <div id="fText"><label class="lbl">Текст</label><textarea id="mContent" class="input" rows="8"></textarea></div>
+    <div id="fLink" class="hidden"><label class="lbl">URL</label><input id="mUrl" class="input" placeholder="https://..."></div>
+    <div id="fFile" class="hidden"><label class="lbl">Файл</label><input id="mFile" class="input" type="file"></div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">Отмена</button>
+      <button class="btn" onclick="saveMaterial()">🚀 Опубликовать</button>
+    </div>`);
+  toggleMatFields();
+}
+function toggleMatFields(){
+  const t = document.getElementById('mType').value;
+  document.getElementById('fText').classList.toggle('hidden', t!=='text');
+  document.getElementById('fLink').classList.toggle('hidden', t!=='link');
+  document.getElementById('fFile').classList.toggle('hidden', t!=='file');
+}
+function saveMaterial(){
+  const title = document.getElementById('mTitle').value.trim();
+  const cat = document.getElementById('mCat2').value.trim() || 'Другое';
+  const desc = document.getElementById('mDesc').value.trim();
+  const type = document.getElementById('mType').value;
+  if (!title) return alert('Введите название');
+  const base = { id:uid(), title, category:cat, desc, type, date:Date.now() };
+
+  if (type==='text'){
+    const content = document.getElementById('mContent').value.trim();
+    if (!content) return alert('Введите текст');
+    materials.push({...base, content}); finish();
+  } else if (type==='link'){
+    const url = document.getElementById('mUrl').value.trim();
+    if (!url) return alert('Введите ссылку');
+    materials.push({...base, url}); finish();
+  } else {
+    const f = document.getElementById('mFile').files[0];
+    if (!f) return alert('Выберите файл');
+    if (f.size > 2*1024*1024) return alert('Файл больше 2 МБ. Загрузите на Google Диск и добавьте ссылкой.');
+    const r = new FileReader();
+    r.onload = e => { materials.push({...base, url:e.target.result, fileName:f.name}); finish(); };
+    r.readAsDataURL(f);
+  }
+  function finish(){
+    saveLocal(); scheduleCloudPush();
+    closeModal(); renderMaterials(); renderHome(); renderAdmin();
+  }
+}
+
+/* =========================================================
+   ТЕСТЫ
+   ========================================================= */
+function renderTests(){
+  const grid = document.getElementById('testGrid');
+  if (!tests.length){ grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big-ic">🧠</span>Тестов пока нет.</div>`; return; }
+  grid.innerHTML = tests.map(t=>{
+    const cnt = results.filter(r=>r.testId===t.id);
+    const avg = cnt.length ? Math.round(cnt.reduce((s,r)=>s+r.percent,0)/cnt.length) : null;
+    return `<article class="card" style="border-top-color:var(--p4)">
+      <div class="mat-top"><span class="chip" style="background:var(--p4)">${t.questions.length} вопросов</span><span class="type-ico">🧠</span></div>
+      <h3>${esc(t.title)}</h3>
+      <p>${esc(t.desc||'')}</p>
+      <div class="muted" style="font-size:12.5px">📅 ${fmtDate(t.created)}${avg!==null?` · средний: <b>${avg}%</b>`:''}</div>
+      <div class="mat-actions">
+        <button class="btn small" onclick="startTest('${t.id}')">▶ Пройти</button>
+        <button class="btn small ghost admin-only" onclick="delTest('${t.id}')">🗑</button>
+      </div>
+    </article>`;
+  }).join('');
+  applyAdminUI();
+}
+function delTest(id){
+  if (!confirm('Удалить тест?')) return;
+  tests = tests.filter(t=>t.id!==id);
+  saveLocal(); scheduleCloudPush(); renderTests(); renderHome(); renderAdmin();
+}
+function closeRunner(){
+  document.getElementById('testRunner').classList.add('hidden');
+  document.getElementById('testGrid').classList.remove('hidden');
+}
+function startTest(id){
+  const t = tests.find(x=>x.id===id); if (!t) return;
+  document.getElementById('testGrid').classList.add('hidden');
+  const r = document.getElementById('testRunner');
+  r.classList.remove('hidden');
+  r.innerHTML = `
+    <button class="btn ghost small" onclick="closeRunner()">← Ко всем тестам</button>
+    <h2 style="margin:16px 0 6px">${esc(t.title)}</h2>
+    <p class="muted" style="margin-bottom:20px">${esc(t.desc||'')}</p>
+    <label class="lbl">Ваше имя *</label>
+    <input id="runnerName" class="input" placeholder="Иванов Иван" style="margin-bottom:6px">
+    <form id="testForm">
+      ${t.questions.map((q,i)=>`
+        <div class="q-card">
+          <div class="q-title">${i+1}. ${esc(q.q)}</div>
+          ${q.options.map((o,j)=>`<label class="ans"><input type="radio" name="q${i}" value="${j}"><span>${esc(o)}</span></label>`).join('')}
+        </div>`).join('')}
+      <button class="btn big" type="submit" style="margin-top:10px">✅ Завершить</button>
+    </form>
+    <div id="testResult"></div>`;
+  document.getElementById('testForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const name = document.getElementById('runnerName').value.trim();
+    if (!name){ alert('Введите имя'); return; }
+    let unanswered = 0, score = 0;
+    t.questions.forEach((q,i)=>{
+      const s = document.querySelector(`input[name="q${i}"]:checked`);
+      if (!s) unanswered++; else if (Number(s.value)===q.correct) score++;
+    });
+    if (unanswered && !confirm(`Не отвечено: ${unanswered}. Завершить?`)) return;
+    const total = t.questions.length;
+    const percent = Math.round(score/total*100);
+    results.push({ id:uid(), testId:t.id, testTitle:t.title, name, score, total, percent, date:Date.now() });
+    saveLocal(); scheduleCloudPush();
+    const good = percent >= 70;
+    document.getElementById('testResult').innerHTML = `
+      <div class="result-box ${good?'':'bad'}">
+        <div class="score">${score} / ${total}</div>
+        <div style="font-size:19px;font-weight:800;margin-top:6px">${percent}%</div>
+        <div style="margin-top:8px">${good?'🎉 Отличный результат!':'💪 Есть куда расти!'}</div>
+      </div>
+      <div class="modal-actions" style="justify-content:flex-start">
+        <button class="btn alt" onclick="closeRunner(); renderTests();">← К тестам</button>
+        <button class="btn ghost" onclick="startTest('${t.id}')">🔄 Заново</button>
+      </div>`;
+  });
+}
+
+let qCounter = 0;
+function openTestModal(){
+  qCounter = 0;
+  openModal(`<h2>➕ Новый тест</h2>
+    <label class="lbl">Название *</label>
+    <input id="tTitle" class="input">
+    <label class="lbl">Описание</label>
+    <input id="tDesc" class="input">
+    <label class="lbl">Вопросы</label>
+    <div id="qList"></div>
+    <button class="btn ghost" type="button" onclick="addQ()">＋ Добавить вопрос</button>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">Отмена</button>
+      <button class="btn" onclick="saveTest()">💾 Сохранить</button>
+    </div>`);
+  addQ();
+}
+function addQ(data){
+  const list = document.getElementById('qList');
+  const n = ++qCounter;
+  const div = document.createElement('div');
+  div.className = 'q-block';
+  div.dataset.qid = 'q'+n+'_'+Math.random().toString(36).slice(2,6);
+  div.innerHTML = `
+    <div class="q-head"><span>ВОПРОС ${list.children.length+1}</span>
+      <button type="button" class="x" onclick="this.closest('.q-block').remove(); renumber();">✕</button></div>
+    <input class="q-text input" placeholder="Текст вопроса" value="${data?esc(data.q):''}" style="margin-bottom:10px">
+    ${[0,1,2,3].map(i=>`<div class="opt-row">
+      <input type="radio" name="c_${div.dataset.qid}" value="${i}" ${data&&data.correct===i?'checked':''}>
+      <input class="opt input" placeholder="Вариант ${i+1}" value="${data&&data.options[i]?esc(data.options[i]):''}">
+    </div>`).join('')}
+    <div class="muted" style="font-size:12.5px">◉ Отметьте правильный вариант</div>`;
+  list.appendChild(div);
+}
+function renumber(){
+  document.querySelectorAll('#qList .q-block').forEach((b,i)=>{ b.querySelector('.q-head span').textContent = 'ВОПРОС '+(i+1); });
+}
+function saveTest(){
+  const title = document.getElementById('tTitle').value.trim();
+  const desc = document.getElementById('tDesc').value.trim();
+  if (!title) return alert('Введите название');
+  const blocks = [...document.querySelectorAll('#qList .q-block')];
+  if (!blocks.length) return alert('Добавьте вопрос');
+  const questions = [];
+  for (const b of blocks){
+    const q = b.querySelector('.q-text').value.trim();
+    const opts = [...b.querySelectorAll('.opt')].map(i=>i.value.trim()).filter(Boolean);
+    const radio = b.querySelector('input[type=radio]:checked');
+    if (!q) return alert('Заполните текст вопроса');
+    if (opts.length < 2) return alert('Нужно минимум 2 варианта');
+    if (!radio) return alert('Отметьте правильный ответ');
+    const correct = Number(radio.value);
+    if (correct >= opts.length) return alert('Правильный ответ указывает на пустой вариант');
+    questions.push({q, options:opts, correct});
+  }
+  tests.push({id:uid(), title, desc, questions, created:Date.now()});
+  saveLocal(); scheduleCloudPush(); closeModal(); renderTests(); renderHome(); renderAdmin();
+}
+
+/* =========================================================
+   АДМИН
+   ========================================================= */
+function applyAdminUI(){
+  document.body.classList.toggle('is-admin', isAdmin);
+  if (!document.getElementById('adminStyle')){
+    const s = document.createElement('style'); s.id='adminStyle';
+    s.textContent = '.admin-only{display:none!important} body.is-admin .admin-only{display:inline-flex!important}';
+    document.head.appendChild(s);
+  }
+}
+function login(){
+  const p = document.getElementById('passInput').value;
+  const real = localStorage.getItem(K.P) || 'admin';
+  if (p === real){
+    isAdmin = true;
+    document.getElementById('passErr').textContent = '';
+    document.getElementById('passInput').value = '';
+    applyAdminUI(); renderAdmin(); renderMaterials(); renderTests();
+  } else document.getElementById('passErr').textContent = '❌ Неверный пароль';
+}
+function logout(){
+  isAdmin = false;
+  applyAdminUI(); renderAdmin(); renderMaterials(); renderTests();
+}
+
+function renderAdmin(){
+  const gate = document.getElementById('adminGate');
+  const panel = document.getElementById('adminPanel');
+  if (!isAdmin){ gate.classList.remove('hidden'); panel.classList.add('hidden'); return; }
+  gate.classList.add('hidden'); panel.classList.remove('hidden');
+
+  /* --- облако --- */
+  const cb = document.getElementById('cloudBox');
+  if (Cloud.blobId){
+    const shareUrl = location.href.split('#')[0] + '#cloud=' + Cloud.blobId;
+    const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=' + encodeURIComponent(shareUrl);
+    cb.innerHTML = `
+      <p style="margin-bottom:12px">✅ Облако активно. ID: <b>${esc(Cloud.blobId)}</b></p>
+      <div class="share-box">
+        <b>📎 Ссылка для учеников (отправьте её или QR):</b>
+        <code>${esc(shareUrl)}</code>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px">
+          <img src="${qr}" style="width:130px;height:130px;border-radius:12px;background:#fff;padding:6px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn small" onclick="copyShare('${esc(shareUrl)}')">📋 Скопировать ссылку</button>
+            <button class="btn small alt" onclick="Cloud.refresh(false)">🔄 Обновить сейчас</button>
+            <button class="btn small ghost" onclick="if(confirm('Отключить облако? Данные останутся только у вас.'))Cloud.disconnect()">❌ Отключить</button>
+          </div>
+        </div>
+        <p class="muted" style="font-size:12.5px;margin-top:10px">Ученики, открывшие ссылку, автоматически увидят те же материалы и тесты, а их результаты появятся у вас.</p>
+      </div>`;
+  } else {
+    cb.innerHTML = `
+      <p class="muted" style="margin-bottom:14px">Сейчас данные хранятся только в вашем браузере. Создайте облако, чтобы делиться ссылкой с учениками — все увидят одни и те же материалы и тесты, а их результаты будут стекаться к вам.</p>
+      <button class="btn" onclick="createCloud()">☁️ Создать облако и получить ссылку</button>`;
+  }
+
+  /* --- результаты --- */
+  const filter = document.getElementById('resFilter');
+  const cur = filter.value;
+  filter.innerHTML = `<option value="">Все тесты</option>` +
+    [...new Set(results.map(r=>r.testTitle))].map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  if ([...filter.options].some(o=>o.value===cur)) filter.value = cur;
+
+  let list = results.slice().sort((a,b)=>b.date-a.date);
+  if (filter.value) list = list.filter(r=>r.testTitle===filter.value);
+  document.getElementById('resCount').textContent = `· всего: ${list.length}` +
+    (list.length ? ` · средний: ${Math.round(list.reduce((s,r)=>s+r.percent,0)/list.length)}%` : '');
+
+  const table = document.getElementById('resTable');
+  if (!list.length){
+    table.innerHTML = `<tr><td style="padding:26px;text-align:center;color:#6f6a95">Пока нет результатов 🤷‍♀️</td></tr>`;
+  } else {
+    table.innerHTML = `<thead><tr><th>Дата</th><th>Имя</th><th>Тест</th><th>Балл</th><th>%</th><th>Оценка</th><th></th></tr></thead>
+      <tbody>${list.map(r=>{
+        const cls = r.percent>=70?'g':r.percent>=40?'y':'r';
+        const mark = r.percent>=85?'5':r.percent>=70?'4':r.percent>=50?'3':'2';
+        return `<tr>
+          <td>${fmtDate(r.date)}</td><td><b>${esc(r.name)}</b></td><td>${esc(r.testTitle)}</td>
+          <td>${r.score} / ${r.total}</td><td><span class="badge ${cls}">${r.percent}%</span></td>
+          <td><b>${mark}</b></td>
+          <td><button class="row-del" onclick="delResult('${r.id}')">🗑</button></td>
+        </tr>`;
+      }).join('')}</tbody>`;
+  }
+
+  document.getElementById('admTests').innerHTML = tests.length
+    ? `<div class="table-scroll"><table><thead><tr><th>Название</th><th>Вопросов</th><th>Прохождений</th><th></th></tr></thead>
+        <tbody>${tests.map(t=>`<tr><td><b>${esc(t.title)}</b></td><td>${t.questions.length}</td>
+          <td>${results.filter(r=>r.testId===t.id).length}</td>
+          <td><button class="row-del" onclick="delTest('${t.id}')">🗑</button></td></tr>`).join('')}</tbody></table></div>`
+    : `<p class="muted">Тестов нет.</p>`;
+
+  document.getElementById('admMats').innerHTML = materials.length
+    ? `<div class="table-scroll"><table><thead><tr><th>Название</th><th>Категория</th><th>Тип</th><th>Дата</th><th></th></tr></thead>
+        <tbody>${materials.slice().sort((a,b)=>b.date-a.date).map(m=>`<tr>
+          <td><b>${esc(m.title)}</b></td><td>${esc(m.category)}</td>
+          <td>${typeIcon(m.type)} ${m.type}</td><td>${fmtDate(m.date)}</td>
+          <td><button class="row-del" onclick="delMaterial('${m.id}')">🗑</button></td></tr>`).join('')}</tbody></table></div>`
+    : `<p class="muted">Материалов нет.</p>`;
+}
+
+async function createCloud(){
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = '⏳ Создаём...';
+  try {
+    await Cloud.create();
+    await Cloud.push();
+    Cloud.lastHash = JSON.stringify({m:materials, t:tests, r:results});
+    Cloud.setStatus('ok');
+    Cloud.startAutoSync();
+    renderAdmin();
+    renderHome();
+  } catch(e){
+    alert('Не удалось создать облако: ' + e.message + '\n\nПроверьте соединение с интернетом.');
+    btn.disabled = false; btn.textContent = '☁️ Создать облако и получить ссылку';
+  }
+}
+function copyShare(url){
+  navigator.clipboard.writeText(url).then(()=>alert('✅ Ссылка скопирована! Отправьте её ученикам.'))
+    .catch(()=>prompt('Скопируйте ссылку:', url));
+}
+function delResult(id){
+  results = results.filter(r=>r.id!==id);
+  saveLocal(); scheduleCloudPush(); renderAdmin(); renderHome();
+}
+function clearResults(){
+  if (!confirm('Удалить ВСЕ результаты? Действие необратимо.')) return;
+  results = [];
+  saveLocal(); scheduleCloudPush(); renderAdmin(); renderHome();
+}
+function changePass(){
+  const v = document.getElementById('newPass').value.trim();
+  if (v.length < 4) return alert('Минимум 4 символа');
+  localStorage.setItem(K.P, v);
+  document.getElementById('newPass').value = '';
+  alert('✅ Пароль изменён!');
+}
+function exportCSV(){
+  if (!results.length) return alert('Нет данных');
+  const rows = [['Дата','Имя','Тест','Балл','Всего','Процент']];
+  results.slice().sort((a,b)=>b.date-a.date).forEach(r=>{
+    rows.push([fmtDate(r.date), r.name, r.testTitle, r.score, r.total, r.percent+'%']);
+  });
+  const csv = '\uFEFF' + rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rezultaty_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+/* =========================================================
+   МОДАЛКА
+   ========================================================= */
+function openModal(html){
+  document.getElementById('modalBox').innerHTML = html;
+  document.getElementById('modalBack').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  document.getElementById('modalBack').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* =========================================================
+   ОБЩИЙ РЕНДЕР
+   ========================================================= */
+function renderAll(){
+  renderHome(); renderMaterials(); renderTests(); if (isAdmin) renderAdmin();
+}
+
+/* =========================================================
+   СТАРТ
+   ========================================================= */
+(async function init(){
+  seed();
+  load();
+  applyAdminUI();
+  document.getElementById('year').textContent = new Date().getFullYear();
+  renderAll();
+
+  Cloud.init();
+  if (Cloud.blobId){
+    await Cloud.refresh(false);
+    Cloud.startAutoSync();
+  }
+
+  // Обновление при возврате на вкладку
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && Cloud.blobId) Cloud.refresh(true);
+  });
+
+  // При смене хэша (например, перешли по ссылке с #cloud=...)
+  window.addEventListener('hashchange', () => {
+    Cloud.init();
+    if (Cloud.blobId){ Cloud.refresh(false); Cloud.startAutoSync(); }
+  });
+})();
+</script>
+</body>
+</html>
